@@ -21,7 +21,6 @@ export class Server{
         const database = MySqlDatabase.build(process.env.CONNECTION_STRING);
         server.listen(process.env.PORT,async ()=>{
             loggers.info(`Server is running at port ${process.env.PORT}`);
-            loggers.info(`url é ${process.env.API_URL}`)
             const events = ["SIGINT","SIGTERM"];
             events.forEach(event =>{
                 process.on(event,()=>{
@@ -34,8 +33,11 @@ export class Server{
     static async #destroyServer(database,server){
         loggers.info("----------BANCO DE DADOS---------")
         loggers.info("fechando banco de dados...");
-        await promisify(database.end.bind(database))()
-        loggers.info("banco de dados fechado!");
+        database.end( (err) =>{
+            if(err) 
+                loggers.error("erro ao fechar banco de dados");
+            loggers.info("banco de dados fechado!");
+        })
         loggers.info("----------SERVIDOR-----------");
         loggers.info("fechando servidor...");
         await promisify(server.close.bind(server))();

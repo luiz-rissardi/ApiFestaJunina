@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "back-end": "node ./server/cluster.js",
+    "back-end": "node ./src/cluster.js",
     "teste-carga": "npx autocannon -c 300 -d 10 http://localhost:8723/api/teste/?date=2000-12-02%2000:00:00"
   },
   "private": true,

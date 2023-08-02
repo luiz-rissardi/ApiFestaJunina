@@ -11,7 +11,7 @@ export class ShoppingFactory{
             const repository = new ShoppingRepository({ connection });
             return new ShoppingService({ repository });
         } catch (error) {
-            loggers.error(error)
+            console.log(error);
             throw new Error("não foi possivle criar ShoppingService")
         }
     }
