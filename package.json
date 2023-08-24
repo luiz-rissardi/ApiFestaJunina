@@ -3,12 +3,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "back-end": "node ./src/cluster.js",
-    "teste-carga": "npx autocannon -c 300 -d 10 http://localhost:8723/api/teste/?date=2000-12-02%2000:00:00"
+    "back-end": "nodemon ./server/cluster.js",
+    "carga": "npx autocannon -c 300 -d 10 http://localhost:8723/api/getSalesBetweenDate/2020-12-02%2000:00:00/2022-12-02%2000:00:00"
   },
   "private": true,
   "dependencies": {
     "autocannon": "^7.11.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mysql2": "^3.5.2",
