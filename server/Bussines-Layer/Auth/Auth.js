@@ -2,8 +2,6 @@ import crypto from "crypto";
 
 
 export class AuthService {
-    constructor() {
-    }
 
     static encryptPassword(password) {
         const hash = crypto

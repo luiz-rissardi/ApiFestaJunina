@@ -11,6 +11,7 @@ export class StockRepository {
         try {
             return await this.#connection.promise().getConnection();
         } catch (error) {
+            console.log(error);
             throw new Error("não foi possivel conectar-se com o banco de dados!")
         }
     }
@@ -18,7 +19,7 @@ export class StockRepository {
     async findAll() {
         try {
             const connection = await this.#connect();
-            const [productsInStock] = await connection.query("SELECT * FROM stock");
+            const [productsInStock] = await connection.query("SELECT * FROM stock where active = true");
             connection.release()
             return productsInStock;
         } catch (error) {
@@ -39,7 +40,7 @@ export class StockRepository {
 
     async insertOne(product) {
         try {
-            const { productName, price, quantity } = product
+            const { productName, price, quantity } = product;
             const connection = await this.#connect();
             await connection.query(`INSERT INTO stock (productName,price,quantity,active) VALUES ("${productName}", ${price}, ${quantity}, true)`)
             connection.release();

@@ -8,8 +8,9 @@ export class StockController{
     async getAllProductsInStock(request,response){
         try {
             const data = await this.#service.findAllProductsInStock();
-            response.status(200).json(data)
+            response.json(data)
         } catch (error) {
+            console.log(error);
             response.writeHead(500)
         }finally{
             response.end()
@@ -19,9 +20,9 @@ export class StockController{
     async createProduct(request,response){
         try {
             const product = request.body;
-            const result = await this.#service.createProduct(product)
-            response.write(result)
-        } catch (error) {
+            const result = await this.#service.createProduct(product);
+            response.json(result)
+        } catch (error) { 
             response.writeHead(500);
         }finally{
             response.end();
@@ -32,7 +33,7 @@ export class StockController{
         try {
             const { productId, product } = request.body;
             const result = await this.#service.updateProduct(productId,product)
-            response.write(result)
+            response.json(result)
         } catch (error) {
             response.writeHead(500);
         }finally{

@@ -15,13 +15,19 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
             if (this.#validateProducts(products) && this.validate("saleId", saleId)) {
                 const data = products.map(product => [ saleId, product.productId, product.quantity * product.price])
                 await this.#repository.insertMany(data);
-                return "produtos inseridos com sucesso!"
+                return {
+                    message:"produtos inseridos com sucesso!",
+                    type:"valid"
+                }
             } else {
-                loggers.warn(`ProductSales => insertProdutsIntoSale => ${this.mesageErrors}`);
-                throw new Error("produto invalido")
+                loggers.warn(`ProductSales => insertProdutsIntoSale => falhou ao validar produtos ${this.mesageErrors}`);
+                return {
+                    message:"produto invalido",
+                    type:"invalid"
+                }
             }
         } catch (error) {
-            loggers.error("ProductSales => findSalesAfterDate =>",error)
+            loggers.error(`ProductSales => findSalesAfterDate => erro ao inserir produtos na venda ${error.message}`)
             throw new Error("não foi possivel inserir os produtos a venda")
         }
     }
@@ -32,11 +38,11 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
                 const totalPirceOfSale = await this.#repository.findTotalPriceOfSale(saleId);
                 return totalPirceOfSale;
             }else{
-                loggers.warn(`ProductSales => findTotalPriceOfSale => ${this.mesageErrors}`)
+                loggers.warn(`ProductSales => findTotalPriceOfSale => falhou ao validar o id da venda ${this.mesageErrors}`)
                 throw new Error("dados inválidos");
             }
         } catch (error) {
-            loggers.error("ProductSales => findTotalPriceOfSale =>",error);
+            loggers.error(`ProductSales => findTotalPriceOfSale => erro ao pegar total de vendas de determinada venda ${error.message}`);
             throw new Error("não foi possivel buscar os dados da venda")
         }
     }

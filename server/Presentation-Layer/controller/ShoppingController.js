@@ -9,8 +9,8 @@ export class ShoppingController {
     async getSalesAfterDate(request, response) {
         try {
             const { date } = request.params;
-            const data = await this.#service.findSalesAfterDate(date);
-            response.status(200).write(JSON.stringify(data))
+            const sales = await this.#service.findSalesAfterDate(date);
+            response.status(200).json(sales)
         } catch (error) {
             response.writeHead(500)
         } finally {
@@ -21,8 +21,8 @@ export class ShoppingController {
     async getSalesBeforeDate(request, response) {
         try {
             const { date } = request.params;
-            const data = await this.#service.findSalesBeforeDate(date);
-            response.status(200).write(JSON.stringify(data))
+            const sales = await this.#service.findSalesBeforeDate(date);
+            response.status(200).json(sales)
         } catch (error) {
             response.writeHead(500)
         } finally {
@@ -33,8 +33,8 @@ export class ShoppingController {
     async getBetweenDate(request, response) {
         try {
             const { dateInitial, dateEnded } = request.params;
-            const data = await this.#service.findBetweenDate(dateInitial, dateEnded);
-            response.status(200).write(JSON.stringify(data))
+            const sales = await this.#service.findBetweenDate(dateInitial, dateEnded);
+            response.status(200).json(sales)
         } catch (error) {
             response.writeHead(500)
         } finally {
@@ -56,7 +56,7 @@ export class ShoppingController {
     async createSale(request,response){
         try {
             const result = await this.#service.createSale(DateFormat(new Date()));
-            response.status(201).write(result)
+            response.status(201).json(result)
         } catch (error) {
             response.writeHead(500)
         }finally{

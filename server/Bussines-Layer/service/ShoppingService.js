@@ -15,11 +15,11 @@ export class ShoppingService extends ValidateFieldsTemplateMethod {
                 const data = this.#repository.findAfterDate(date);
                 return data;
             } else {
-                loggers.warn(`ShoppingController => findSalesAfterDate => ${this.mesageErrors}`)
+                loggers.warn(`ShoppingController => findSalesAfterDate => falhou ao validar  data ${this.mesageErrors}`)
                 throw new Error("data invalida!");
             }
         } catch (error) {
-            loggers.error("ShoppingService => findSalesAfterDate => ",error);
+            loggers.error(`ShoppingService => findSalesAfterDate => erro ao pegar vendas apos uma data ${error.message}`);
             throw new Error("não foi possivel buscar os dados!")
         }
     }
@@ -30,11 +30,11 @@ export class ShoppingService extends ValidateFieldsTemplateMethod {
                 const data = await this.#repository.findBeforeDate(date);
                 return data;
             }else{
-                loggers.warn(`ShoppingController => findSalesBeforeDate => ${this.mesageErrors}`)
+                loggers.warn(`ShoppingController => findSalesBeforeDate => falhou ao validar a data ${this.mesageErrors}`)
                 throw new Error("data invalida!");
             }
         } catch (error) {
-            loggers.error("ShoppingController => findSalesBeforeDate => ",error);
+            loggers.error(`ShoppingController => findSalesBeforeDate => erro ao pegar vendas antes de uma data ${error.message}`);
             throw new Error("não foi possivel buscar os dados!")
         }
     }
@@ -45,12 +45,12 @@ export class ShoppingService extends ValidateFieldsTemplateMethod {
                 const data = await this.#repository.findBetweenDate(initialDate,endedDate);
                 return data;
             }else{
-                loggers.warn(`ShoppingController => findBetweenDate => ${this.mesageErrors}`);
+                loggers.warn(`ShoppingController => findBetweenDate => falho ao validar as datas ${this.mesageErrors}`);
                 throw new Error("data invalida!");
             }
         } catch (error) {
-            loggers.error("ShoppingController => findBetweenDate => ",error);
-            throw new Error("não foi possivlem buscar os dados!")
+            loggers.error(`ShoppingController => findBetweenDate => erro ao pegar vendas entre duas datas ${error.message}`);
+            throw new Error("não foi possivel buscar os dados!")
         }
     }
 
@@ -59,7 +59,7 @@ export class ShoppingService extends ValidateFieldsTemplateMethod {
             const count = await this.#repository.count();
             return count
         } catch (error) {
-            loggers.error("ShoppingController => countTotalSales => ",error);
+            loggers.error(`ShoppingController => countTotalSales => erro ao pegar o total de vendas ${error.message}`);
             throw new Error("não foi possivel buscar os dados!")
         }
     }
@@ -68,13 +68,19 @@ export class ShoppingService extends ValidateFieldsTemplateMethod {
         try {
             if(this.validate("dateOfSale",dateOfSale)){
                 this.#repository.insertOne(dateOfSale);
-                return "venda criada com sucesso!"
+                return {
+                    message:"venda criada com sucesso!",
+                    type:"valid"
+                }
             }else{
-                loggers.warn(`ShoppingController => createSale => ${this.mesageErrors}`);
-                throw new Error("data invalida!");
+                loggers.warn(`ShoppingController => createSale => falhou ao validar a data ${this.mesageErrors}`);
+                return {
+                    message:"não foi possivel criar uma venda",
+                    type:"invalid"
+                }
             }
         } catch (error) {
-            loggers.error("ShoppingController => createSale => ",error);
+            loggers.error(`ShoppingController => createSale => erro ao criar uma nova venda ${error.message}`);
             throw new Error("não foi possivel criar venda!")
         }
     }

@@ -86,11 +86,11 @@ export class RoutesOfApi {
             this.#userController.login(req, res);
         })
 
-        routes.route("/updatePassword").post((req, res) => {
+        routes.route("/updatePassword").put((req, res) => {
             this.#userController.changePassword(req, res)
         })
 
-        routes.route("/upadateUserName").post((req,res)=>{
+        routes.route("/upadateUserName").put((req,res)=>{
             this.#userController.changeUserName(req,res)
         })
 

@@ -9,7 +9,7 @@ export class UserController {
         try {
             const { userName, password } = request.body;
             const account = await this.#service.login(userName,password);
-            response.json(account)
+            response.status(200).json(account)
         } catch (error) {
             response.writeHead(500);
         }finally{
@@ -21,7 +21,7 @@ export class UserController {
         try {
             const { newPassword } = request.body;
             const result = await this.#service.changePassword(1,newPassword);
-            response.write(result)
+            response.status(201).json(result)
         } catch (error) {
             response.writeHead();
         }finally{
@@ -33,7 +33,7 @@ export class UserController {
         try {
             const { newUserName } = request.body;
             const result = await this.#service.changeUserName(1,newUserName);
-            response.write(result);
+            response.status(201).json(result)
         } catch (error) {
             response.writeHead(500);
         }finally{

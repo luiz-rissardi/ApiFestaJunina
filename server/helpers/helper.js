@@ -48,8 +48,7 @@ async function bodyParse(request, response, next) {
     }
 }
 
-function AcceptOnlyDomain(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:8000");
+function AcceptDefaultDomain(req, res, next) {
     next();
 }
 
@@ -57,5 +56,5 @@ export {
     loggers,
     bodyParse,
     DateFormat,
-    AcceptOnlyDomain
+    AcceptDefaultDomain
 };

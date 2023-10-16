@@ -12,10 +12,10 @@ export class StockService extends ValidateFieldsTemplateMethod {
 
     async findAllProductsInStock() {
         try {
-            const produts = await this.#repository.findAll();
-            return produts
+            const products = await this.#repository.findAll();
+            return products
         } catch (error) {
-            loggers.error("Stock => findAllProductsInStock => ", error)
+            loggers.error(`Stock => findAllProductsInStock => erro ao buscar os dados ${error.message}`)
             throw new Error("não foi possivel buscar os dados");
         }
     }
@@ -25,31 +25,43 @@ export class StockService extends ValidateFieldsTemplateMethod {
             product.price = Number(product?.price)
             product.quantity = Number(product?.quantity)
             if (this.#validateProduct(product)) {
-                await this.#repository.updateOne(productId,product);
-                return "produto atualizado com sucesso"
+                await this.#repository.updateOne(productId, product);
+                return {
+                    message: "produto atualizado com sucesso",
+                    type: "valid"
+                }
             } else {
-                loggers.error(`Stock => updateProduct => ${this.mesageErrors}`)
-                throw new Error("valor invalido");
+                loggers.error(`Stock => updateProduct => Validação de produto falhou ${this.mesageErrors}`);
+                return {
+                    message: "Produto inválido. Verifique os dados fornecidos.",
+                    type: "invalid"
+                }
             }
         } catch (error) {
-            loggers.error("Stock => updateProduct => ", error)
+            loggers.error(`Stock => updateProduct => erro ao atualizar os dados ${error.message}`)
             throw new Error("não foi possivel atualizar o produto")
         }
     }
 
     async createProduct(product) {
         try {
-            product.price = Number(product?.price)
-            product.quantity = Number(product?.quantity)
+            product.price = Number(product.price)
+            product.quantity = Number(product.quantity)
             if (this.#validateProduct(product)) {
                 await this.#repository.insertOne(product)
-                return "produto salvo com sucesso!";
-            }else{
-            loggers.error(`Stock => createProduct => ${this.mesageErrors}`)
-                return "produto invalido";
+                return {
+                    message: "produto salvo com sucesso",
+                    type: "valid"
+                }
+            } else {
+                loggers.error(`Stock => createProduct => Validação do produto falhou ${this.mesageErrors}`)
+                return {
+                    message: "Produto inválido. Verifique os dados fornecidos.",
+                    type: "invalid"
+                }
             }
         } catch (error) {
-            loggers.error("Stock => createProduct => ", error)
+            loggers.error(`Stock => createProduct => erro ao criar um produto ${error.message}`)
             throw new Error("não foi possivel createProduct o produto")
         }
     }

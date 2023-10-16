@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "back-end": "nodemon ./server/cluster.js",
-    "carga": "npx autocannon -c 300 -d 10 http://localhost:8723/api/getSalesBetweenDate/2020-12-02%2000:00:00/2022-12-02%2000:00:00"
+    "back-end": "nodemon ./server/index.js",
+    "carga": "npx autocannon -c 100 -d 10 http://localhost:8723/api/getSalesAfterDate/2020-12-01%2000:00:00"
   },
   "private": true,
   "dependencies": {

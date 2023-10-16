@@ -27,7 +27,7 @@ export class ShoppingRepository {
     async findBeforeDate(date) {
         try {
             const connection = await this.#connect();
-            const [result] = await connection.query(`SELECT * FROM shopping WHERE dateOfSale < '${date}'`) 
+            const [result] = await connection.query('SELECT * FROM shopping WHERE dateOfSale < ?'[date]) 
             connection.release();
             return result;
         } catch (error) {
@@ -49,7 +49,7 @@ export class ShoppingRepository {
     async insertOne(dateOfSale) {
         try {
             const connection = await this.#connect();
-            await connection.query(`INSERT INTO shopping (dateOfSale) VALUES ('${dateOfSale}')`)
+            await connection.query('INSERT INTO shopping (dateOfSale) VALUES ?',[dateOfSale])
             connection.release()
             return ;
         } catch (error) {

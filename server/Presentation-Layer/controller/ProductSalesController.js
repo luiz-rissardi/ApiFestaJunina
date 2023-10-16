@@ -9,9 +9,7 @@ export class ProductSalesController {
         try {
             const { products, saleId } = request.body;
             const result = await this.#service.insertProdutsIntoSale(products, saleId)
-            response.status(201).json({
-                message: result
-            })
+            response.status(201).json(result)
         } catch (error) {
             response.writeHead(500)
         } finally {

@@ -49,10 +49,6 @@ const shoppingEntity = {
         type:"Date",
         minLength:10
     },
-    price:{
-        type:"number",
-        minLength:1
-    },
     saleId:{
         type:"number",
         minLength:1

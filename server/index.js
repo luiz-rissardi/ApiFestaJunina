@@ -6,7 +6,7 @@ import { config } from 'dotenv';
 import cors from "cors"
 
 
-import { loggers,bodyParse,AcceptOnlyDomain } from "./helpers/helper.js"
+import { loggers,bodyParse,AcceptDefaultDomain } from "./helpers/helper.js"
 import { MySqlDatabase } from './Acess-Layer/data/MySqlDataBase.js';
 import { RoutesOfApi } from './Presentation-Layer/routes/routes.js';
 import { ShoppingFactory } from './Bussines-Layer/factory/ShoppingFactory.js';
@@ -23,8 +23,10 @@ export class Server{
         const routes = Server.#instanceDependeces();
         const database = MySqlDatabase.build(process.env.CONNECTION_STRING);
 
+        app.use(cors({
+            origin: 'http://localhost:4200'
+        }))
         app.use("/api",bodyParse,routes)
-        
         server.listen(process.env.PORT,async ()=>{
             loggers.info(`Server is running at port ${process.env.PORT}`);
             const events = ["SIGINT","SIGTERM"];
