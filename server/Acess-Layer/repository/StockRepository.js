@@ -34,6 +34,7 @@ export class StockRepository {
             connection.release();
             return;
         } catch (error) {
+            console.log(error);
             throw new Error(`um erro ocorreu quando atualizava os produtos ${error.message}`)
         }
     }

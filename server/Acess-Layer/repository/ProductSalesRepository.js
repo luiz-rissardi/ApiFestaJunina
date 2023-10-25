@@ -24,20 +24,4 @@ export class ProductSalesRepository {
             throw new Error(`Erro ao inserir os produtos da venda ${error.message}`)
         }
     }
-
-    async findTotalPriceOfSale(saleId) {
-        try {
-            const connection = await this.#connect();
-            const [result] = await connection.query(`
-            select ST.productName, sum( PS.Totalprice ) as totalPrice
-            from productSales as PS
-            inner join stock as ST on PS.productId = ST.productId
-            where PS.saleId = ${saleId}
-            group by ST.productName`)
-            connection.release();
-            return result
-        } catch (error) {
-            return `Erro ao buscar dados da venda ${error.message}`
-        }
-    }
 }

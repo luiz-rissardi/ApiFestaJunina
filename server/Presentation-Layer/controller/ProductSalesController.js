@@ -16,16 +16,4 @@ export class ProductSalesController {
             response.end();
         }
     }
-
-    async getTotalPrice(request, response) {
-        try {
-            const { saleId } = request.params
-            const totalPriceOfSale = await this.#service.findTotalPriceOfSale(Number(saleId))
-            response.status(200).json(totalPriceOfSale)
-        } catch (error) {
-            response.writeHead(500);
-        } finally {
-            response.end()
-        }
-    }
 }

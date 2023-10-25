@@ -1,4 +1,4 @@
-import { loggers } from "../../helpers/helper.js";
+import { DateFormat, loggers } from "../../helpers/helper.js";
 import { ValidateFieldsTemplateMethod } from "../util/TemplateMethods/ValidadetFileds.js";
 import { shoppingEntity } from "../util/entity/TypesOfSchema.js";
 
@@ -9,42 +9,12 @@ export class ShoppingService extends ValidateFieldsTemplateMethod {
         this.#repository = repository;
     }
 
-    findSalesAfterDate(date) {
+    async findBetweenDate(initialDate, endedDate) {
         try {
-            if (this.validate("dateOfSale", date, { ValidationDateOn: true })) {
-                const data = this.#repository.findAfterDate(date);
+            if (this.validate("dateOfSale", initialDate) && this.validate("dateOfSale", endedDate)) {
+                const data = await this.#repository.findBetweenDate(initialDate, endedDate);
                 return data;
             } else {
-                loggers.warn(`ShoppingController => findSalesAfterDate => falhou ao validar  data ${this.mesageErrors}`)
-                throw new Error("data invalida!");
-            }
-        } catch (error) {
-            loggers.error(`ShoppingService => findSalesAfterDate => erro ao pegar vendas apos uma data ${error.message}`);
-            throw new Error("não foi possivel buscar os dados!")
-        }
-    }
-
-    async findSalesBeforeDate(date){
-        try {
-            if(this.validate("dateOfSale",date)){
-                const data = await this.#repository.findBeforeDate(date);
-                return data;
-            }else{
-                loggers.warn(`ShoppingController => findSalesBeforeDate => falhou ao validar a data ${this.mesageErrors}`)
-                throw new Error("data invalida!");
-            }
-        } catch (error) {
-            loggers.error(`ShoppingController => findSalesBeforeDate => erro ao pegar vendas antes de uma data ${error.message}`);
-            throw new Error("não foi possivel buscar os dados!")
-        }
-    }
-
-    async findBetweenDate(initialDate,endedDate){
-        try {
-            if(this.validate("dateOfSale",initialDate) && this.validate("dateOfSale",endedDate)){
-                const data = await this.#repository.findBetweenDate(initialDate,endedDate);
-                return data;
-            }else{
                 loggers.warn(`ShoppingController => findBetweenDate => falho ao validar as datas ${this.mesageErrors}`);
                 throw new Error("data invalida!");
             }
@@ -54,7 +24,7 @@ export class ShoppingService extends ValidateFieldsTemplateMethod {
         }
     }
 
-    async countTotalSales(){
+    async countTotalSales() {
         try {
             const count = await this.#repository.count();
             return count
@@ -64,20 +34,14 @@ export class ShoppingService extends ValidateFieldsTemplateMethod {
         }
     }
 
-    async createSale(dateOfSale){
+    async createSale() {
         try {
-            if(this.validate("dateOfSale",dateOfSale)){
-                this.#repository.insertOne(dateOfSale);
-                return {
-                    message:"venda criada com sucesso!",
-                    type:"valid"
-                }
-            }else{
-                loggers.warn(`ShoppingController => createSale => falhou ao validar a data ${this.mesageErrors}`);
-                return {
-                    message:"não foi possivel criar uma venda",
-                    type:"invalid"
-                }
+            const dateOfSale = DateFormat(new Date());
+            const saleId = this.#repository.insertOne(dateOfSale);
+            return {
+                message: "venda criada com sucesso!",
+                type: "valid",
+                saleId
             }
         } catch (error) {
             loggers.error(`ShoppingController => createSale => erro ao criar uma nova venda ${error.message}`);

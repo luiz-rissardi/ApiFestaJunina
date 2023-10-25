@@ -1,33 +1,8 @@
-import { DateFormat } from "../../helpers/helper.js";
 
 export class ShoppingController {
     #service;
     constructor({ service }) {
         this.#service = service;
-    }
-
-    async getSalesAfterDate(request, response) {
-        try {
-            const { date } = request.params;
-            const sales = await this.#service.findSalesAfterDate(date);
-            response.status(200).json(sales)
-        } catch (error) {
-            response.writeHead(500)
-        } finally {
-            response.end();
-        }
-    }
-
-    async getSalesBeforeDate(request, response) {
-        try {
-            const { date } = request.params;
-            const sales = await this.#service.findSalesBeforeDate(date);
-            response.status(200).json(sales)
-        } catch (error) {
-            response.writeHead(500)
-        } finally {
-            response.end();
-        }
     }
 
     async getBetweenDate(request, response) {
@@ -55,7 +30,7 @@ export class ShoppingController {
 
     async createSale(request,response){
         try {
-            const result = await this.#service.createSale(DateFormat(new Date()));
+            const result = await this.#service.createSale();
             response.status(201).json(result)
         } catch (error) {
             response.writeHead(500)

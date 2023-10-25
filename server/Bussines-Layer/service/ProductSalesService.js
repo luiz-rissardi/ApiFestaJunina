@@ -32,21 +32,6 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
         }
     }
 
-    async findTotalPriceOfSale(saleId) {
-        try {
-            if (this.validate("saleId", saleId)) {
-                const totalPirceOfSale = await this.#repository.findTotalPriceOfSale(saleId);
-                return totalPirceOfSale;
-            }else{
-                loggers.warn(`ProductSales => findTotalPriceOfSale => falhou ao validar o id da venda ${this.mesageErrors}`)
-                throw new Error("dados inválidos");
-            }
-        } catch (error) {
-            loggers.error(`ProductSales => findTotalPriceOfSale => erro ao pegar total de vendas de determinada venda ${error.message}`);
-            throw new Error("não foi possivel buscar os dados da venda")
-        }
-    }
-
     #validateProducts(products) {
         return !products
             .map(product => {

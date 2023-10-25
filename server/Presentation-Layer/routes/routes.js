@@ -24,13 +24,6 @@ export class RoutesOfApi {
 
     #routesOfShoppingController() {
         const routes = Router()
-        routes.route("/getSalesAfterDate/:date").get((req, res) => {
-            this.#shoppingController.getSalesAfterDate(req, res)
-        })
-
-        routes.route("/getSalesBeforeDate/:date").get((req, res) => {
-            this.#shoppingController.getSalesBeforeDate(req, res)
-        })
 
         routes.route("/getSalesBetweenDate/:dateInitial/:dateEnded").get((req, res) => {
             this.#shoppingController.getBetweenDate(req, res)
@@ -52,10 +45,6 @@ export class RoutesOfApi {
 
         routes.route("/insertProducts").post((req, res) => {
             this.#productSalesController.insertProducts(req, res)
-        })
-
-        routes.route("/getTotalPriceOfSale/:saleId").get((req, res) => {
-            this.#productSalesController.getTotalPrice(req, res)
         })
 
         return routes
