@@ -27,7 +27,7 @@ export class StockRepository {
         }
     }
 
-    async updateOne(productId,product) {
+    async updateOne(productId, product) {
         try {
             const connection = await this.#connect();
             await connection.query(`UPDATE stock SET productName = "${product?.productName}" ,price = ${product?.price}, quantity = ${product?.quantity}, active = ${product?.active} WHERE productId = ${productId}`)
@@ -39,13 +39,28 @@ export class StockRepository {
         }
     }
 
+    async substractionStock(updates) {
+        try {
+            const connection = await this.#connect();
+            await connection.beginTransaction();
+            for await (let update of updates) {
+                connection.query("UPDATE stock SET quantity = quantity - ? WHERE productId = ?", [Number(update.quantity), update.productId])
+            }
+            await connection.commit();
+            connection.release();
+        } catch (error) {
+            console.log(error);
+            throw new Error("não foi possivel fazer as subtração no estoque ")
+        }
+    }
+
     async insertOne(product) {
         try {
             const { productName, price, quantity } = product;
             const connection = await this.#connect();
-            await connection.query(`INSERT INTO stock (productName,price,quantity,active) VALUES ("${productName}", ${price}, ${quantity}, true)`)
+            const [result] = await connection.query(`INSERT INTO stock (productName,price,quantity,active) VALUES ("${productName}", ${price}, ${quantity}, true)`)
             connection.release();
-            return;
+            return result.insertId;
         } catch (error) {
             throw new Error(`um erro ocorreu ao tentar inserir novos produtos ${error.message}`)
         }

@@ -43,15 +43,25 @@ export class StockService extends ValidateFieldsTemplateMethod {
         }
     }
 
+    async substractionOfStock(updates){
+        try {
+            this.#repository.substractionStock(updates);
+        } catch (error) {
+            loggers.error(`stock => substractionOfStock => erro ao subtrair do estoque => ${error.message}`)
+            throw new Error("não foi possivel subtrair do estoque")
+        }
+    }
+
     async createProduct(product) {
         try {
             product.price = Number(product.price)
             product.quantity = Number(product.quantity)
             if (this.#validateProduct(product)) {
-                await this.#repository.insertOne(product)
+                const productId = await this.#repository.insertOne(product)
                 return {
                     message: "produto salvo com sucesso",
-                    type: "valid"
+                    type: "valid",
+                    productId
                 }
             } else {
                 loggers.error(`Stock => createProduct => Validação do produto falhou ${this.mesageErrors}`)

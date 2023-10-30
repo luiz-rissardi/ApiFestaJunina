@@ -14,18 +14,12 @@ export class UserService extends ValidateFieldsTemplateMethod {
         try {
             if (this.validate("userName", userName)) {
                 const passwordHash = AuthService.encryptPassword(password);
-                const user = await this.#repository.findOne(userName, passwordHash);
-                const userIsAuthenticated = user.length != 0
-                if (userIsAuthenticated) {
-                    return {
-                        authenticated: true,
-                        user
-                    }
-                } else {
-                    return {
-                        authenticated: false,
-                        user: null
-                    }
+                const result = await this.#repository.findOne(userName, passwordHash);
+                const userIsAuthenticated = result.length != 0;
+                const user = result.length != 0?result:null;
+                return {
+                    authenticated: userIsAuthenticated,
+                    user
                 }
             } else {
                 loggers.error(`User => login => falhou ao validar os dados ${this.mesageErrors}`)

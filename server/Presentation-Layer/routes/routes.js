@@ -57,6 +57,10 @@ export class RoutesOfApi {
             this.#stockController.getAllProductsInStock(req, res)
         })
 
+        routes.route("/substractionStock").post((req,res)=>{
+            this.#stockController.substractionStock(req,res)
+        })
+
         routes.route("/createProduct").post((req, res) => {
             this.#stockController.createProduct(req, res)
         })

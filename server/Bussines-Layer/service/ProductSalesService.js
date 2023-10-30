@@ -13,17 +13,17 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
     async insertProdutsIntoSale(products, saleId) {
         try {
             if (this.#validateProducts(products) && this.validate("saleId", saleId)) {
-                const data = products.map(product => [ saleId, product.productId, product.quantity * product.price])
+                const data = products.map(product => [saleId, product.productId, product.quantity * product.price])
                 await this.#repository.insertMany(data);
                 return {
-                    message:"produtos inseridos com sucesso!",
-                    type:"valid"
+                    message: "produtos inseridos com sucesso!",
+                    type: "valid"
                 }
             } else {
                 loggers.warn(`ProductSales => insertProdutsIntoSale => falhou ao validar produtos ${this.mesageErrors}`);
                 return {
-                    message:"produto invalido",
-                    type:"invalid"
+                    message: "produto invalido",
+                    type: "invalid"
                 }
             }
         } catch (error) {
