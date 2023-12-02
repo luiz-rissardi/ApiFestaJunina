@@ -16,7 +16,7 @@ export class UserService extends ValidateFieldsTemplateMethod {
                 const passwordHash = AuthService.encryptPassword(password);
                 const result = await this.#repository.findOne(userName, passwordHash);
                 const userIsAuthenticated = result.length != 0;
-                const user = result.length != 0?result:null;
+                const user = result.length != 0 ? result : null;
                 return {
                     authenticated: userIsAuthenticated,
                     user
@@ -27,23 +27,68 @@ export class UserService extends ValidateFieldsTemplateMethod {
             }
         } catch (error) {
             loggers.error(`User => login => erro ao buscar usuario ${error.message}`)
-            return "não foi possivel realizar o login"
+            throw new Error("não foi possivel realizar o login");
         }
     }
 
-    async changePassword(userId, newPassword) {
+    async createAccount(userName, password, productIdAnexed) {
         try {
-            const passwordHash = AuthService.encryptPassword(newPassword);
-            if (this.validate("userId", userId) & this.validate("passwordHash", passwordHash)) {
-                await this.#repository.updateOne(userId, "passwordHash", passwordHash)
+            const accountIsValid = this.#validateUser({ userName, password, productIdAnexed });
+            if (accountIsValid) {
+                const passwordHash = AuthService.encryptPassword(password);
+                const account = {
+                    userName,
+                    passwordHash,
+                    productIdAnexed,
+                    typeAccount: 2
+                }
+                const alredyExist = await this.#repository.alreadyExists(account.userName);
+                if (alredyExist) {
+                    return {
+                        authenticated: false,
+                        user: null,
+                        message: "nome de usuario já em uso"
+                    }
+                }
+                await this.#repository.createUser(account);
                 return {
-                    message: "senha atualizada com sucesso",
-                    type: "valid"
+                    authenticated: true,
+                    user: account
                 }
             } else {
-                loggers.error(`User => changePassword => falhou aon validar os dados ${this.mesageErrors}`)
+                loggers.error(`User => login => falhou ao validar os dados ${this.mesageErrors}`);
                 return {
-                    message: "dados inválidos",
+                    authenticated: false,
+                    user: null
+                }
+            }
+        } catch (error) {
+            loggers.error(`User => createAccount => erro ao criar novo usuario ${error.message}`);
+            throw new Error("não foi possivel criar conta");
+        }
+    }
+
+    async changePassword(userName, password) {
+        try {
+            const passwordHash = AuthService.encryptPassword(password);
+            const alredyExist = await this.#repository.alreadyExists(userName);
+            if (alredyExist) {
+                if (this.validate("userName", userName) && this.validate("passwordHash", passwordHash)) {
+                    await this.#repository.updateOne(userName, 'passwordHash', passwordHash)
+                    return {
+                        message: "senha atualizada com sucesso",
+                        type: "valid"
+                    }
+                } else {
+                    loggers.error(`User => changePassword => falhou aon validar os dados ${this.mesageErrors}`)
+                    return {
+                        message: "dados inválidos",
+                        type: "invalid"
+                    }
+                }
+            } else {
+                return {
+                    message: "usuario não existe",
                     type: "invalid"
                 }
             }
@@ -72,6 +117,13 @@ export class UserService extends ValidateFieldsTemplateMethod {
             loggers.error(`User => changeUserName => erro ao atualizar o nome do usuario ${error.message}`)
             return "não foi possivel atualizar o nome"
         }
+    }
+
+    #validateUser(user) {
+        return !Object.keys(user).map(key => {
+            return this.validate(key, user[key])
+        }).includes(false);
+
     }
 }
 

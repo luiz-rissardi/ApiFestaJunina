@@ -58,7 +58,7 @@ export class StockRepository {
         try {
             const { productName, price, quantity } = product;
             const connection = await this.#connect();
-            const [result] = await connection.query(`INSERT INTO stock (productName,price,quantity,active) VALUES ("${productName}", ${price}, ${quantity}, true)`)
+            const [result] = await connection.query("INSERT INTO stock (productName,price,quantity,active) VALUES (?, ?, ?, true)",[productName,price,quantity])
             connection.release();
             return result.insertId;
         } catch (error) {

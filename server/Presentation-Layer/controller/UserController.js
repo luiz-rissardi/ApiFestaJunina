@@ -19,8 +19,8 @@ export class UserController {
 
     async changePassword(request,response){
         try {
-            const { newPassword } = request.body;
-            const result = await this.#service.changePassword(1,newPassword);
+            const { userName, password} = request.body;
+            const result = await this.#service.changePassword(userName,password);
             response.status(201).json(result)
         } catch (error) {
             response.writeHead();
@@ -34,6 +34,18 @@ export class UserController {
             const { newUserName } = request.body;
             const result = await this.#service.changeUserName(1,newUserName);
             response.status(201).json(result)
+        } catch (error) {
+            response.writeHead(500);
+        }finally{
+            response.end();
+        }
+    }
+
+    async createAccount(request,response){
+        try {
+            const { userName,password,productIdAnexed } = request.body;
+            const result = await this.#service.createAccount(userName,password,productIdAnexed);
+            response.status(201).json(result);
         } catch (error) {
             response.writeHead(500);
         }finally{

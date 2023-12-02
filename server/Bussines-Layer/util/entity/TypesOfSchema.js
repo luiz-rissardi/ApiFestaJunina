@@ -25,22 +25,22 @@ const StockEntity = {
 
 const UsersEntity = {
     //field : type of Field
-    userId:{
-        type:"number",
-        minLength:1
-    },
     userName:{
         type:"string",
         minLength:4
     },
+    password:{
+        type:"string",
+        minLength:4
+    },
+    productIdAnexed:{
+        type:"number",
+        minLength:1
+    },
     passwordHash:{
         type:"string",
-        minLength:128
-    },
-    hashCodeUser:{
-        type:"number",
-        minLength:128
-    },
+        minLength:"128"
+    }
 }
 
 const shoppingEntity = {

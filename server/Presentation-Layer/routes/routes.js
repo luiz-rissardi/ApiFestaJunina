@@ -79,6 +79,10 @@ export class RoutesOfApi {
             this.#userController.login(req, res);
         })
 
+        routes.route("/createAccount").post((req,res)=>{
+            this.#userController.createAccount(req,res);
+        })
+
         routes.route("/updatePassword").put((req, res) => {
             this.#userController.changePassword(req, res)
         })

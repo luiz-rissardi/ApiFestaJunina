@@ -16,7 +16,7 @@ export class ShoppingRepository {
     async findBetweenDate(initialDate, endDate) {
         try {
             const connection = await this.#connect();
-            const [result] = await connection.query(`SELECT * FROM shopping WHERE dateOfSale between '${initialDate}' and '${endDate}' `)
+            const [result] = await connection.query("SELECT * FROM shopping WHERE dateOfSale between ? and ? ",[initialDate,endDate])
             connection.release();
             return result;
         } catch (error) {
