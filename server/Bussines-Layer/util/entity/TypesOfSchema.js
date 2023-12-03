@@ -18,9 +18,13 @@ const StockEntity = {
         minLength:1
     },
     active: {
-        type:"boolean",
+        type:"number",
         minLength:1
     },
+    productChosen:{
+        type:"boolean",
+        minLength:1
+    }
 }
 
 const UsersEntity = {

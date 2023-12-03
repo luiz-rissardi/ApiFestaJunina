@@ -30,7 +30,16 @@ export class StockRepository {
     async updateOne(productId, product) {
         try {
             const connection = await this.#connect();
-            await connection.query(`UPDATE stock SET productName = "${product?.productName}" ,price = ${product?.price}, quantity = ${product?.quantity}, active = ${product?.active} WHERE productId = ${productId}`)
+            await connection.query(`UPDATE stock SET productName = ? ,price = ?, quantity = ?, active = ?, productChosen = ? WHERE productId = ?`,
+                [
+                    product?.productName,
+                    product?.price,
+                    product?.quantity,
+                    product?.active,
+                    product?.productChosen,
+                    productId
+                ]
+            )
             connection.release();
             return;
         } catch (error) {
@@ -58,7 +67,7 @@ export class StockRepository {
         try {
             const { productName, price, quantity } = product;
             const connection = await this.#connect();
-            const [result] = await connection.query("INSERT INTO stock (productName,price,quantity,active) VALUES (?, ?, ?, true)",[productName,price,quantity])
+            const [result] = await connection.query("INSERT INTO stock (productName,price,quantity,active) VALUES (?, ?, ?, true)", [productName, price, quantity])
             connection.release();
             return result.insertId;
         } catch (error) {
