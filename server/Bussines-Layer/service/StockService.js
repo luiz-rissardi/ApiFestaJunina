@@ -23,7 +23,8 @@ export class StockService extends ValidateFieldsTemplateMethod {
     async updateProduct(productId, product) {
         try {
             product.price = Number(product?.price)
-            product.quantity = Number(product?.quantity)
+            product.quantity = Number(product?.quantity);
+            product.active = Boolean(product.active);
 
             if (this.#validateProduct(product)) {
                 await this.#repository.updateOne(productId, product);
