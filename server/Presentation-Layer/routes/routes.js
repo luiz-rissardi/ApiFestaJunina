@@ -1,5 +1,5 @@
 import { Router } from "express";
-import cors from "cors"
+
 
 export class RoutesOfApi {
     #shoppingController;

@@ -24,6 +24,7 @@ export class StockService extends ValidateFieldsTemplateMethod {
         try {
             product.price = Number(product?.price)
             product.quantity = Number(product?.quantity)
+
             if (this.#validateProduct(product)) {
                 await this.#repository.updateOne(productId, product);
                 return {
@@ -71,6 +72,7 @@ export class StockService extends ValidateFieldsTemplateMethod {
                 }
             }
         } catch (error) {
+            console.log(error);
             loggers.error(`Stock => createProduct => erro ao criar um produto ${error.message}`)
             throw new Error("não foi possivel createProduct o produto")
         }

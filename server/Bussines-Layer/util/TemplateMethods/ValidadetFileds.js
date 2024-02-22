@@ -57,7 +57,7 @@ export class ValidateFieldsTemplateMethod {
     }
 
     #_isEmpty(value, field) {
-        if (value || (value === true || value === false)) {
+        if (value != null && value != undefined) {
             return true
         }
         this.mesageErrors.push(`\n o valor de ${field} é vazio`)

@@ -7,7 +7,9 @@ export class MySqlDatabase {
     static build(connectionString) {
         try {
             if (!this.connection) {
+                console.log("conectando ...");
                 this.connection = createPool(connectionString)
+                console.log("banco conectado");
                 return this.connection;
             }
             return this.connection
