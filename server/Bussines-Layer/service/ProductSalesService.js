@@ -13,22 +13,41 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
     async insertProdutsIntoSale(products, saleId) {
         try {
             if (this.#validateProducts(products) && this.validate("saleId", saleId)) {
-                const data = products.map(product => [saleId, product.productId, product.quantity * product.price])
+                const data = products.map(product => [saleId, product.productId, product.quantity * product.price, product.quantity])
                 await this.#repository.insertMany(data);
                 return {
                     message: "produtos inseridos com sucesso!",
                     type: "valid"
                 }
-            } else {
-                loggers.warn(`ProductSales => insertProdutsIntoSale => falhou ao validar produtos ${this.mesageErrors}`);
+            }
+        } catch (error) {
+            loggers.error(`ProductSales => insertProdutsIntoSale => erro ao inserir produtos na venda ${error.message}`)
+            throw new Error("não foi possivel inserir os produtos a venda")
+        }
+    }
+
+    async recordProductsSales(saleId,quantity,productId){
+        try {
+            if(
+                this.validate("productId",productId) &
+                this.validate("saleId",saleId) &
+                this.validate("quantity",quantity)
+            ){
+                await this.#repository.updateOne(productId,saleId,quantity);
                 return {
-                    message: "produto invalido",
+                    message: "baixa realizada com sucesso",
+                    type: "valid"
+                }
+            }else{
+                loggers.warn(`ProductSales => recordProductsSales => falhou ao dar baixa em produtos ${this.mesageErrors}`);
+                return {
+                    message: "erro ao realizar baixa",
                     type: "invalid"
                 }
             }
         } catch (error) {
-            loggers.error(`ProductSales => findSalesAfterDate => erro ao inserir produtos na venda ${error.message}`)
-            throw new Error("não foi possivel inserir os produtos a venda")
+            loggers.error(`ProductSales => recordProductsSales => erro ao dar baixa nas vendas`);
+            throw new Error("não foi possivel dar baixa nos productos da venda")
         }
     }
 

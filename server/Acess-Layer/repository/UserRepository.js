@@ -9,7 +9,7 @@ export class UserRepository {
         try {
             return await this.#connection.promise().getConnection();
         } catch (error) {
-            throw new Error("não foi possivel conectar no banco de dados!");
+            throw new Error("não foi possivel realizar conexão");
         }
     }
 

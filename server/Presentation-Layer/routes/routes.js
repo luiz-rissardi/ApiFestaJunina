@@ -6,11 +6,13 @@ export class RoutesOfApi {
     #productSalesController;
     #stockController;
     #userController;
-    constructor({ shoppingController, productSalesController, stockController, userController }) {
+    #clientController;
+    constructor({ shoppingController, productSalesController, stockController, userController,clientController }) {
         this.#shoppingController = shoppingController;
         this.#productSalesController = productSalesController;
         this.#stockController = stockController;
         this.#userController = userController;
+        this.#clientController = clientController;
     }
 
     getRoutes() {
@@ -19,7 +21,14 @@ export class RoutesOfApi {
         allroutes.use(this.#routesOfShoppingController());
         allroutes.use(this.#routesOfStockController());
         allroutes.use(this.#routesOfUserController());
+        allroutes.use(this.#routesOfClient());
         return allroutes
+    }
+
+    #routesOfClient() {
+        const routes = Router();
+        routes.route("/client").post((req,res)=>this.#clientController.handlerClient(req,res));
+        return routes;
     }
 
     #routesOfShoppingController() {
@@ -47,6 +56,10 @@ export class RoutesOfApi {
             this.#productSalesController.insertProducts(req, res)
         })
 
+        routes.route("/productSales/record").post((req, res) => {
+            this.#productSalesController.recordProductSales(req, res)
+        })
+
         return routes
     }
 
@@ -57,8 +70,8 @@ export class RoutesOfApi {
             this.#stockController.getAllProductsInStock(req, res)
         })
 
-        routes.route("/substractionStock").post((req,res)=>{
-            this.#stockController.substractionStock(req,res)
+        routes.route("/substractionStock").post((req, res) => {
+            this.#stockController.substractionStock(req, res)
         })
 
         routes.route("/createProduct").post((req, res) => {
@@ -79,16 +92,16 @@ export class RoutesOfApi {
             this.#userController.login(req, res);
         })
 
-        routes.route("/createAccount").post((req,res)=>{
-            this.#userController.createAccount(req,res);
+        routes.route("/createAccount").post((req, res) => {
+            this.#userController.createAccount(req, res);
         })
 
         routes.route("/updatePassword").put((req, res) => {
             this.#userController.changePassword(req, res)
         })
 
-        routes.route("/upadateUserName").put((req,res)=>{
-            this.#userController.changeUserName(req,res)
+        routes.route("/upadateUserName").put((req, res) => {
+            this.#userController.changeUserName(req, res)
         })
 
         return routes

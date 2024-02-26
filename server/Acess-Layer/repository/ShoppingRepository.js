@@ -9,7 +9,7 @@ export class ShoppingRepository {
         try {
             return this.#connection.promise().getConnection();
         } catch (error) {
-            throw new Error("não foi possivel conectar-se com o banco de dados!")
+            throw new Error("não foi possivel realizar conexão")
         }
     }
 
@@ -24,14 +24,18 @@ export class ShoppingRepository {
         }
     }
 
-    async insertOne(dateOfSale) {
+    async insertOne(dateOfSale, saleId) {
         try {
             const connection = await this.#connect();
-            const [result] = await connection.query('INSERT INTO shopping (dateOfSale) VALUES (?)', [dateOfSale]);
-            connection.release()
-            return result.insertId;
+                const [existingRecord] = await connection.query('SELECT saleId FROM shopping WHERE saleId = ?', [saleId]);
+    
+            if (existingRecord.length === 0) {
+                await connection.query('INSERT INTO shopping (saleId, dateOfSale) VALUES (?, ?)', [saleId, dateOfSale]);
+                connection.release();
+            }
+            return saleId;
         } catch (error) {
-            throw new Error(`Erro ao inserir um nova venda ${error.message}`)
+            throw new Error(`Erro ao inserir uma nova venda: ${error.message}`);
         }
     }
 

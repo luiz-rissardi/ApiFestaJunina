@@ -54,16 +54,16 @@ const shoppingEntity = {
         minLength:10
     },
     saleId:{
-        type:"number",
-        minLength:1
+        type:"string",
+        minLength:32
     }
 }
 
 const productSalesEntity = {
     //field : type of Field
     saleId:{
-        type:"number",
-        minLength:1
+        type:"string",
+        minLength:32
     },
     productId:{
         type:"number",
@@ -73,14 +73,30 @@ const productSalesEntity = {
         type:"number",
         minLength:1
     },
+    quantity:{
+        type:"number",
+        minLength:1
+    },
     ...StockEntity
+}
+
+const clientEntity = {
+    saleId:{
+        type:"string",
+        minLength:32
+    },
+    phone:{
+        type:"string",
+        minLength:11
+    }
 }
 
 export {
     StockEntity,
     UsersEntity,
     shoppingEntity,
-    productSalesEntity
+    productSalesEntity,
+    clientEntity
 }
 
 

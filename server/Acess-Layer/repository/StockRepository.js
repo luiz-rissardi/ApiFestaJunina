@@ -12,7 +12,7 @@ export class StockRepository {
             return await this.#connection.promise().getConnection();
         } catch (error) {
             console.log(error);
-            throw new Error("não foi possivel conectar-se com o banco de dados!")
+            throw new Error("não foi possivel realizar conexão")
         }
     }
 

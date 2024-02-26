@@ -34,14 +34,14 @@ export class ShoppingService extends ValidateFieldsTemplateMethod {
         }
     }
 
-    async createSale() {
+    async createSale(saleId) {
         try {
             const dateOfSale = DateFormat(new Date());
-            const saleId = await this.#repository.insertOne(dateOfSale);
+            await this.#repository.insertOne(dateOfSale,saleId);
             return {
                 message: "venda criada com sucesso!",
                 type: "valid",
-                saleId:saleId
+                saleId
             }
         } catch (error) {
             loggers.error(`ShoppingController => createSale => erro ao criar uma nova venda ${error.message}`);

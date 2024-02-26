@@ -16,4 +16,16 @@ export class ProductSalesController {
             response.end();
         }
     }
+
+    async recordProductSales(request,response){
+        try {
+            const { saleId,productId,quantity } = request.body;
+            const result = await this.#service.recordProductsSales(saleId,quantity,productId);
+            response.status(200).json(result)
+        } catch (error) {
+            response.writeHead(500)
+        }finally{
+            response.end();
+        }
+    }
 }

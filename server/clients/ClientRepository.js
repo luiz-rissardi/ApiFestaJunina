@@ -1,7 +1,7 @@
 
 
-export class ProductSalesRepository {
-    #connection;
+export class ClientRepository {
+    #connection
     constructor({ connection }) {
         this.#connection = connection;
     }
@@ -14,25 +14,26 @@ export class ProductSalesRepository {
         }
     }
 
-    async insertMany(productsSales) {
+    async insertOne(saleId, phone) {
         try {
             const connection = await this.#connect();
-            await connection.query(`INSERT INTO productSales  VALUES ?`, [productsSales]);
+            await connection.query("INSERT INTO clients VALUES (?,?)", [saleId, phone]);
             connection.release();
             return;
         } catch (error) {
-            throw new Error(`Erro ao inserir os produtos da venda ${error.message}`)
+            console.log(error);
+            throw new Error(`Erro ao registrar cliente ${error.message}`)
         }
     }
 
-    async updateOne(productId,saleId,quantity){
+    async findOne(phone) {
         try {
             const connection = await this.#connect();
-            await connection.query(`update productSales set quantity = quantity - ? where saleId = ? and productId = ?`,[quantity,saleId,productId])
+            const [[client]] = await connection.query("SELECT * FROM clients WHERE phone = ?", [phone]);
             connection.release();
-            return;
+            return client;
         } catch (error) {
-            throw new Error(`Erro ao dar baixa em produto ${error.message}`)
+            throw new Error(`Erro ao buscar cliente: ${error.message}`);
         }
     }
 }

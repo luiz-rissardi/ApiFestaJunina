@@ -13,6 +13,7 @@ import { ShoppingFactory } from './Bussines-Layer/factory/ShoppingFactory.js';
 import { ProductSalesFactory } from './Bussines-Layer/factory/ProductSalesFactory.js';
 import { StockFactory } from './Bussines-Layer/factory/StockFactory.js';
 import { UserFactory } from './Bussines-Layer/factory/UserFacktory.js';
+import { ClientFactory } from './clients/clientFactory.js';
 
 config()
 
@@ -59,7 +60,8 @@ export class Server{
         const productSalesController = ProductSalesFactory.createInstance();
         const stockController = StockFactory.createInstance();
         const userController = UserFactory.createInstance();
-        const routes = new RoutesOfApi({ shoppingController, productSalesController, stockController, userController }).getRoutes();
+        const clientController = ClientFactory.createInstance();
+        const routes = new RoutesOfApi({ shoppingController, productSalesController, stockController, userController,clientController }).getRoutes();
         return routes
     }
 }
