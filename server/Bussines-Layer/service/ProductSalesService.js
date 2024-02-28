@@ -26,19 +26,19 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
         }
     }
 
-    async recordProductsSales(saleId,quantity,productId){
+    async recordProductsSales(saleId, quantity, productId) {
         try {
-            if(
-                this.validate("productId",productId) &
-                this.validate("saleId",saleId) &
-                this.validate("quantity",quantity)
-            ){
-                await this.#repository.updateOne(productId,saleId,quantity);
+            if (
+                this.validate("productId", productId) &
+                this.validate("saleId", saleId) &
+                this.validate("quantity", quantity)
+            ) {
+                await this.#repository.updateOne(productId, saleId, quantity);
                 return {
                     message: "baixa realizada com sucesso",
                     type: "valid"
                 }
-            }else{
+            } else {
                 loggers.warn(`ProductSales => recordProductsSales => falhou ao dar baixa em produtos ${this.mesageErrors}`);
                 return {
                     message: "erro ao realizar baixa",
@@ -48,6 +48,27 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
         } catch (error) {
             loggers.error(`ProductSales => recordProductsSales => erro ao dar baixa nas vendas`);
             throw new Error("não foi possivel dar baixa nos productos da venda")
+        }
+    }
+
+    async findProductsOfSale(saleId,productId) {
+        try {
+            productId = Number(productId);
+            if(
+                this.validate("saleId",saleId) &&
+                this.validate("productId",productId)
+            ){
+                return await this.#repository.findMany(saleId,productId);
+            }else{
+                loggers.error(`ProductSales => findProductsOfSale => erro ao buscar produtos das vendas ${this.mesageErrors}`)
+                return {
+                    message:"erro ao buscar produtos",
+                    type:"invalid"
+                }
+            }
+        } catch (error) {
+            loggers.error(`ProductSales => findProductsOfSale => erro ao buscar produtos das vendas`)
+            throw new Error("não foi possivel buscar produtos da venda")
         }
     }
 

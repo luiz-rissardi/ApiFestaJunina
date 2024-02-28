@@ -35,4 +35,18 @@ export class ProductSalesRepository {
             throw new Error(`Erro ao dar baixa em produto ${error.message}`)
         }
     }
+
+    async findMany(saleId,productId){
+        try {
+            const connection = await this.#connect();
+            const [ [productSales] ] = await connection.query(`SELECT saleId, productId, SUM(quantity) AS quantity, SUM(totalPrice) AS totalPrice
+            FROM productSales
+            WHERE saleId = ? AND productId = ?
+            GROUP BY saleId, productId`,[saleId,productId]);
+            connection.release();
+            return productSales;
+        } catch (error) {
+            throw new Error(`Error ao buscar produtos da venda ${error.message}`)
+        }
+    }
 }

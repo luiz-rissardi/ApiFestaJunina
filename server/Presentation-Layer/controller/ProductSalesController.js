@@ -28,4 +28,16 @@ export class ProductSalesController {
             response.end();
         }
     }
+
+    async getProductSales(request,response){
+        try {
+            const { saleId,productId } = request.params;
+            const productSales = await this.#service.findProductsOfSale(saleId,productId);
+            response.status(200).json(productSales);
+        } catch (error) {
+            response.writeHead(500);
+        }finally{
+            response.end();
+        }
+    }
 }
