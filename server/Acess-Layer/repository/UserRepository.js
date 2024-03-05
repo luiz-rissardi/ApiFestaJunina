@@ -9,7 +9,7 @@ export class UserRepository {
         try {
             return await this.#connection.promise().getConnection();
         } catch (error) {
-            throw new Error("não foi possivel realizar conexão");
+            throw new Error(error.message)
         }
     }
 
@@ -20,7 +20,7 @@ export class UserRepository {
             connection.release();
             return user;
         } catch (error) {
-            throw new Error(`Erro ao realizar o login ${error.message}`)
+            throw new Error(error.message)
         }
     }
 
@@ -31,7 +31,7 @@ export class UserRepository {
             connection.release();
             return;
         } catch (error) {
-            throw new Error(`Erro ao realizar mundaça de dados ${error.message}`)
+            throw new Error(error.message)
         }
     }
 
@@ -45,7 +45,7 @@ export class UserRepository {
             return false
         } catch (error) {
             console.log(error);
-            throw new Error(`Erro ao criar novo usuario ${error.message}`);
+            throw new Error(error.message)
         }
     }
 

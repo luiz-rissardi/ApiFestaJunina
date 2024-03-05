@@ -21,32 +21,78 @@ export class ProductSalesRepository {
             connection.release();
             return;
         } catch (error) {
-            throw new Error(`Erro ao inserir os produtos da venda ${error.message}`)
+            throw new Error(error.message)
         }
     }
 
-    async updateOne(productId,saleId,quantity){
+    async updateQuantityOne(productId, saleId, quantity) {
         try {
             const connection = await this.#connect();
-            await connection.query(`update productSales set quantity = quantity - ? where saleId = ? and productId = ?`,[quantity,saleId,productId])
+            await connection.query(`UPDATE productSales 
+            SET quantity = quantity - ? 
+            WHERE saleId = ? 
+            AND productId = ?
+            LIMIT 1;`, [quantity, saleId, productId])
             connection.release();
             return;
         } catch (error) {
-            throw new Error(`Erro ao dar baixa em produto ${error.message}`)
+            throw new Error(error.message)
         }
     }
 
-    async findMany(saleId,productId){
+    async findMany(saleId, productId) {
         try {
             const connection = await this.#connect();
-            const [ [productSales] ] = await connection.query(`SELECT saleId, productId, SUM(quantity) AS quantity, SUM(totalPrice) AS totalPrice
+            const [[productSales]] = await connection.query(`SELECT saleId, productId, SUM(quantity) AS quantity, SUM(totalPrice) AS totalPrice
             FROM productSales
             WHERE saleId = ? AND productId = ?
-            GROUP BY saleId, productId`,[saleId,productId]);
+            GROUP BY saleId, productId`, [saleId, productId]);
             connection.release();
             return productSales;
         } catch (error) {
-            throw new Error(`Error ao buscar produtos da venda ${error.message}`)
+            throw new Error(error.message)
+        }
+    }
+
+    async findOne(saleId, productId) {
+        try {
+            const connection = await this.#connect();
+            const [product] = await connection.query(` SELECT *
+            FROM productSales
+            WHERE productId = ? and 
+            saleId = ?`, [productId, saleId]);
+            connection.release();
+            return product || false
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async insertOne(productSale) {
+        try {
+            const connection = await this.#connect();
+            await connection.query(`INSERT INTO productSales  VALUES (?,?,?,?)`
+                , [productSale.saleId, productSale.productId, productSale.totalPrice, productSale.quantity]
+            );
+            connection.release();
+            return;
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async updateProductOne(saleId, productId, quantity, totalPrice) {
+        try {
+            const connection = await this.#connect();
+            await connection.query(` 
+            UPDATE productSales
+            SET quantity = quantity + ?,
+                totalPrice = totalPrice + ?
+            WHERE saleId = ? AND 
+                  productId = ?
+            `, [quantity, totalPrice, saleId, productId])
+        } catch (error) {
+            throw new Error(error.message)
         }
     }
 }

@@ -62,7 +62,7 @@ export class RoutesOfApi {
                 this.#productSalesController.insertProducts(req, res)
             })
 
-        routes.route("/product/sale/record").post((req, res) => {
+        routes.route("/product/sale/remove").post((req, res) => {
             this.#productSalesController.recordProductSales(req, res)
         })
 

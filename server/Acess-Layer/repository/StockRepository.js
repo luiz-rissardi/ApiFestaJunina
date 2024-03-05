@@ -11,8 +11,7 @@ export class StockRepository {
         try {
             return await this.#connection.promise().getConnection();
         } catch (error) {
-            console.log(error);
-            throw new Error("não foi possivel realizar conexão")
+            throw new Error(error.message)
         }
     }
 
@@ -23,7 +22,7 @@ export class StockRepository {
             connection.release()
             return productsInStock;
         } catch (error) {
-            throw new Error(`um erro ocorreu quando pegava os produtos ${error.message}`)
+            throw new Error(error.message)
         }
     }
 
@@ -43,8 +42,7 @@ export class StockRepository {
             connection.release();
             return;
         } catch (error) {
-            console.log(error);
-            throw new Error(`um erro ocorreu quando atualizava os produtos ${error.message}`)
+            throw new Error(error.message)
         }
     }
 
@@ -58,8 +56,7 @@ export class StockRepository {
             await connection.commit();
             connection.release();
         } catch (error) {
-            console.log(error);
-            throw new Error("não foi possivel fazer as subtração no estoque ")
+            throw new Error(error.message)
         }
     }
 
@@ -67,11 +64,11 @@ export class StockRepository {
         try {
             const { productName, price, quantity } = product;
             const connection = await this.#connect();
-            const [result] = await connection.query("INSERT INTO stock (productName,price,quantity,active,productChosen) VALUES (?, ?, ?, true,false)", [productName, price, quantity,true])
+            const [result] = await connection.query("INSERT INTO stock (productName,price,quantity,active,productChosen) VALUES (?, ?, ?, true,false)", [productName, price, quantity, true])
             connection.release();
             return result.insertId;
         } catch (error) {
-            throw new Error(`um erro ocorreu ao tentar inserir novos produtos ${error.message}`)
+            throw new Error(error.message)
         }
     }
 

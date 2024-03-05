@@ -13,8 +13,20 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
     async insertProdutsIntoSale(products, saleId) {
         try {
             if (this.#validateProducts(products) && this.validate("saleId", saleId)) {
-                const data = products.map(product => [saleId, product.productId, product.quantity * product.price, product.quantity])
-                await this.#repository.insertMany(data);
+                const data = products.map(product => ({
+                    saleId,
+                    productId: product.productId,
+                    totalPrice: product.quantity * product.price,
+                    quantity: product.quantity
+                }))
+                data.map(async el => {
+                    const alreadyExists = await this.#repository.findOne(el.saleId, el.productId);
+                    if (alreadyExists.length != 0) {
+                        await this.#repository.updateProductOne(el.saleId, el.productId, el.quantity, el.totalPrice)
+                    } else {
+                        await this.#repository.insertOne(el)
+                    }
+                })
                 return {
                     message: "produtos inseridos com sucesso!",
                     type: "valid"
@@ -33,7 +45,7 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
                 this.validate("saleId", saleId) &
                 this.validate("quantity", quantity)
             ) {
-                await this.#repository.updateOne(productId, saleId, quantity);
+                await this.#repository.updateQuantityOne(productId, saleId, quantity);
                 return {
                     message: "baixa realizada com sucesso",
                     type: "valid"
@@ -46,28 +58,28 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
                 }
             }
         } catch (error) {
-            loggers.error(`ProductSales => recordProductsSales => erro ao dar baixa nas vendas`);
+            loggers.error(`ProductSales => recordProductsSales => erro ao dar baixa nas vendas ${error.message}`);
             throw new Error("não foi possivel dar baixa nos productos da venda")
         }
     }
 
-    async findProductsOfSale(saleId,productId) {
+    async findProductsOfSale(saleId, productId) {
         try {
             productId = Number(productId);
-            if(
-                this.validate("saleId",saleId) &&
-                this.validate("productId",productId)
-            ){
-                return await this.#repository.findMany(saleId,productId);
-            }else{
+            if (
+                this.validate("saleId", saleId) &&
+                this.validate("productId", productId)
+            ) {
+                return await this.#repository.findMany(saleId, productId);
+            } else {
                 loggers.error(`ProductSales => findProductsOfSale => erro ao buscar produtos das vendas ${this.mesageErrors}`)
                 return {
-                    message:"erro ao buscar produtos",
-                    type:"invalid"
+                    message: "erro ao buscar produtos",
+                    type: "invalid"
                 }
             }
         } catch (error) {
-            loggers.error(`ProductSales => findProductsOfSale => erro ao buscar produtos das vendas`)
+            loggers.error(`ProductSales => findProductsOfSale => erro ao buscar produtos das vendas ${error.message}`)
             throw new Error("não foi possivel buscar produtos da venda")
         }
     }

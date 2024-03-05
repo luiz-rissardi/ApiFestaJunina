@@ -20,7 +20,6 @@ export class StockController {
     async createProduct(request, response) {
         try {
             const product = request.body;
-            console.log(product);
             const result = await this.#service.createProduct(product);
             response.json(result)
         } catch (error) {

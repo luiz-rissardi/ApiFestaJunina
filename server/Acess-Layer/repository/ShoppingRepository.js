@@ -20,7 +20,7 @@ export class ShoppingRepository {
             connection.release();
             return result;
         } catch (error) {
-            throw new Error(`Erro ao buscar dados de Shopping ${error.message}`)
+            throw new Error(error.message)
         }
     }
 
@@ -35,7 +35,7 @@ export class ShoppingRepository {
             }
             return saleId;
         } catch (error) {
-            throw new Error(`Erro ao inserir uma nova venda: ${error.message}`);
+            throw new Error(error.message)
         }
     }
 
@@ -46,7 +46,7 @@ export class ShoppingRepository {
             connection.release()
             return result.length
         } catch (error) {
-            throw new Error(`Erro ao contar as vendas ${error.message}`)
+            throw new Error(error.message)
         }
     }
 }
