@@ -66,6 +66,11 @@ export class RoutesOfApi {
             this.#productSalesController.recordProductSales(req, res)
         })
 
+        // busca os top 5 produtos das vendas
+        routes.route("/product/top").get((req, res) => {
+            this.#productSalesController.getTop5ProductsOfSales(req, res);
+        })
+
         return routes
     }
 

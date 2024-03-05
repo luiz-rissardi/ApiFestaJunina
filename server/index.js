@@ -8,7 +8,7 @@ import cors from "cors"
 
 import { loggers,bodyParse,AcceptDefaultDomain } from "./helpers/helper.js"
 import { MySqlDatabase } from './data/MySqlDataBase.js';
-import { RoutesOfApi } from './Presentation-Layer/routes/routes.js';
+import { RoutesOfApi } from './routes/routes.js';
 import { ShoppingFactory } from './shop/ShoppingFactory.js';
 import { ProductSalesFactory } from './productSales/ProductSalesFactory.js';
 import { StockFactory } from './stock/StockFactory.js';

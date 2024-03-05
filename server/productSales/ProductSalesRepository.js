@@ -81,6 +81,23 @@ export class ProductSalesRepository {
         }
     }
 
+    async findTop5() {
+        try {
+            const connection = await this.#connect();
+            const [products] = await connection.query(`
+            select  ST.productName , SUM(PS.totalPrice) as precoTotal
+            from productSales as PS
+            inner join stock as ST on ST.productId = PS.productId
+            group by producTName
+            order by precoTotal desc
+            limit 5`);
+            connection.release();
+            return products
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
     async updateProductOne(saleId, productId, quantity, totalPrice) {
         try {
             const connection = await this.#connect();

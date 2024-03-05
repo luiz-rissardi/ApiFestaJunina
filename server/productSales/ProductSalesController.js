@@ -17,26 +17,37 @@ export class ProductSalesController {
         }
     }
 
-    async recordProductSales(request,response){
+    async recordProductSales(request, response) {
         try {
-            const { saleId,productId,quantity } = request.body;
-            const result = await this.#service.recordProductsSales(saleId,quantity,productId);
+            const { saleId, productId, quantity } = request.body;
+            const result = await this.#service.recordProductsSales(saleId, quantity, productId);
             response.status(200).json(result)
         } catch (error) {
             response.writeHead(500)
-        }finally{
+        } finally {
             response.end();
         }
     }
 
-    async getProductSales(request,response){
+    async getProductSales(request, response) {
         try {
-            const { saleId,productId } = request.params;
-            const productSales = await this.#service.findProductsOfSale(saleId,productId);
+            const { saleId, productId } = request.params;
+            const productSales = await this.#service.findProductsOfSale(saleId, productId);
             response.status(200).json(productSales);
         } catch (error) {
             response.writeHead(500);
-        }finally{
+        } finally {
+            response.end();
+        }
+    }
+
+    async getTop5ProductsOfSales(request, response) {
+        try {
+            const result = await this.#service.findTop5ProductsOfSales();
+            response.status(200).json(result);
+        } catch (error) {
+            response.writeHead(500);
+        } finally {
             response.end();
         }
     }
