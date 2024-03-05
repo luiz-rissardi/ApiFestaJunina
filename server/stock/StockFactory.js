@@ -1,7 +1,7 @@
-import { StockService } from "../service/StockService.js";
-import { StockRepository } from "../../Acess-Layer/repository/StockRepository.js";
-import { MySqlDatabase } from "../../Acess-Layer/data/MySqlDataBase.js";
-import { StockController } from "../../Presentation-Layer/controller/StockController.js";
+import { StockService } from "./StockService.js";
+import { StockRepository } from "./StockRepository.js";
+import { MySqlDatabase } from "../data/MySqlDataBase.js";
+import { StockController } from "./StockController.js";
 
 export class StockFactory{
     static createInstance(){

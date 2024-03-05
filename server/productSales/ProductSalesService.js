@@ -1,4 +1,4 @@
-import { loggers } from "../../helpers/helper.js";
+import { loggers } from "../helpers/helper.js";
 import { ValidateFieldsTemplateMethod } from "../util/TemplateMethods/ValidadetFileds.js";
 import { productSalesEntity } from "../util/entity/TypesOfSchema.js";
 
@@ -13,15 +13,10 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
     async insertProdutsIntoSale(products, saleId) {
         try {
             if (this.#validateProducts(products) && this.validate("saleId", saleId)) {
-                const data = products.map(product => ({
-                    saleId,
-                    productId: product.productId,
-                    totalPrice: product.quantity * product.price,
-                    quantity: product.quantity
-                }))
+                const data = this.#mappedProducts(products, saleId)
                 data.map(async el => {
-                    const alreadyExists = await this.#repository.findOne(el.saleId, el.productId);
-                    if (alreadyExists.length != 0) {
+                    const alreadyExists = (await this.#repository.findOne(el.saleId, el.productId)).length != 0;
+                    if (alreadyExists) {
                         await this.#repository.updateProductOne(el.saleId, el.productId, el.quantity, el.totalPrice)
                     } else {
                         await this.#repository.insertOne(el)
@@ -82,6 +77,15 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
             loggers.error(`ProductSales => findProductsOfSale => erro ao buscar produtos das vendas ${error.message}`)
             throw new Error("não foi possivel buscar produtos da venda")
         }
+    }
+
+    #mappedProducts(products, saleId) {
+        return products.map(product => ({
+            saleId,
+            productId: product.productId,
+            totalPrice: product.quantity * product.price,
+            quantity: product.quantity
+        }))
     }
 
     #validateProducts(products) {

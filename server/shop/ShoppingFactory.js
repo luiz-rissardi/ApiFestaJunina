@@ -1,7 +1,7 @@
-import { ShoppingRepository } from "../../Acess-Layer/repository/ShoppingRepository.js";
-import { ShoppingService } from "../service/ShoppingService.js";
-import { MySqlDatabase } from "../../Acess-Layer/data/MySqlDataBase.js";
-import { ShoppingController } from "../../Presentation-Layer/controller/ShoppingController.js";
+import { ShoppingRepository } from "./ShoppingRepository.js";
+import { ShoppingService } from "./ShoppingService.js";
+import { MySqlDatabase } from "../data/MySqlDataBase.js";
+import { ShoppingController } from "./ShoppingController.js";
 
 
 export class ShoppingFactory{

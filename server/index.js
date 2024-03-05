@@ -7,12 +7,12 @@ import cors from "cors"
 
 
 import { loggers,bodyParse,AcceptDefaultDomain } from "./helpers/helper.js"
-import { MySqlDatabase } from './Acess-Layer/data/MySqlDataBase.js';
+import { MySqlDatabase } from './data/MySqlDataBase.js';
 import { RoutesOfApi } from './Presentation-Layer/routes/routes.js';
-import { ShoppingFactory } from './Bussines-Layer/factory/ShoppingFactory.js';
-import { ProductSalesFactory } from './Bussines-Layer/factory/ProductSalesFactory.js';
-import { StockFactory } from './Bussines-Layer/factory/StockFactory.js';
-import { UserFactory } from './Bussines-Layer/factory/UserFacktory.js';
+import { ShoppingFactory } from './shop/ShoppingFactory.js';
+import { ProductSalesFactory } from './productSales/ProductSalesFactory.js';
+import { StockFactory } from './stock/StockFactory.js';
+import { UserFactory } from './users/UserFactory.js';
 import { ClientFactory } from './clients/clientFactory.js';
 
 config()

@@ -1,5 +1,5 @@
 
-import { loggers } from "../../helpers/helper.js";
+import { loggers } from "../helpers/helper.js";
 import { ValidateFieldsTemplateMethod } from "../util/TemplateMethods/ValidadetFileds.js";
 import { StockEntity } from "../util/entity/TypesOfSchema.js"
 

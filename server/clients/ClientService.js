@@ -1,5 +1,5 @@
-import { ValidateFieldsTemplateMethod } from "../Bussines-Layer/util/TemplateMethods/ValidadetFileds.js";
-import { clientEntity } from "../Bussines-Layer/util/entity/TypesOfSchema.js";
+import { ValidateFieldsTemplateMethod } from "../util/TemplateMethods/ValidadetFileds.js";
+import { clientEntity } from "../util/entity/TypesOfSchema.js";
 import { loggers } from "../helpers/helper.js";
 
 export class ClientService extends ValidateFieldsTemplateMethod {

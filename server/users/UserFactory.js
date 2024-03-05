@@ -1,7 +1,7 @@
-import { UserService  } from "../service/UserService.js";
-import { UserRepository } from "../../Acess-Layer/repository/UserRepository.js";
-import { MySqlDatabase } from "../../Acess-Layer/data/MySqlDataBase.js";
-import { UserController } from "../../Presentation-Layer/controller/UserController.js";
+import { UserService  } from "./UserService.js";
+import { UserRepository } from "./UserRepository.js";
+import { MySqlDatabase } from "../data/MySqlDataBase.js";
+import { UserController } from "./UserController.js";
 
 export class UserFactory{
     static createInstance(){

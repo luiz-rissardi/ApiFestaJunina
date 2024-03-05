@@ -1,7 +1,7 @@
-import { MySqlDatabase } from "../../Acess-Layer/data/MySqlDataBase.js";
-import { ProductSalesRepository } from "../../Acess-Layer/repository/ProductSalesRepository.js";
-import { ProductSalesService } from "../service/ProductSalesService.js";
-import { ProductSalesController } from "../../Presentation-Layer/controller/ProductSalesController.js";
+import { MySqlDatabase } from "../data/MySqlDataBase.js";
+import { ProductSalesRepository } from "./ProductSalesRepository.js";
+import { ProductSalesService } from "./ProductSalesService.js";
+import { ProductSalesController } from "./ProductSalesController.js";
 
 export class ProductSalesFactory {
     static createInstance() {

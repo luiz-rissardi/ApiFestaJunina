@@ -1,5 +1,5 @@
 import { createPool } from "mysql2";
-import { loggers } from "../../helpers/helper.js";
+import { loggers } from "../helpers/helper.js";
 
 export class MySqlDatabase {
     connection ;
