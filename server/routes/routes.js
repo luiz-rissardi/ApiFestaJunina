@@ -7,12 +7,14 @@ export class RoutesOfApi {
     #stockController;
     #userController;
     #clientController;
-    constructor({ shoppingController, productSalesController, stockController, userController, clientController }) {
+    #twilioController;
+    constructor({ shoppingController, productSalesController, stockController, userController, clientController,twilioController }) {
         this.#shoppingController = shoppingController;
         this.#productSalesController = productSalesController;
         this.#stockController = stockController;
         this.#userController = userController;
         this.#clientController = clientController;
+        this.#twilioController = twilioController;
     }
 
     getRoutes() {
@@ -22,6 +24,7 @@ export class RoutesOfApi {
         allroutes.use(this.#routesOfStockController());
         allroutes.use(this.#routesOfUserController());
         allroutes.use(this.#routesOfClient());
+        allroutes.use(this.#routesOfMessagesController());
         return allroutes
     }
 
@@ -66,10 +69,17 @@ export class RoutesOfApi {
             this.#productSalesController.recordProductSales(req, res)
         })
 
-        // busca os top 5 produtos das vendas
-        routes.route("/product/top").get((req, res) => {
-            this.#productSalesController.getTop5ProductsOfSales(req, res);
-        })
+        // busca os top $ produtos das vendas
+        routes.route("/product/top")
+            .get((req, res) => {
+                this.#productSalesController.getTopProductsOfSales(req, res);
+            })
+
+        routes.route("/product/top/:rank")
+            .get((req, res) => {
+                this.#productSalesController.getTopProductsOfSales(req, res);
+            })
+
 
         return routes
     }
@@ -114,6 +124,16 @@ export class RoutesOfApi {
 
         routes.route("/user/username").put((req, res) => {
             this.#userController.changeUserName(req, res)
+        })
+
+        return routes
+    }
+
+    #routesOfMessagesController() {
+        const routes = Router();
+
+        routes.route("/message").post((req, res) => {
+            this.#twilioController.sendQrCodeTo(req, res);
         })
 
         return routes

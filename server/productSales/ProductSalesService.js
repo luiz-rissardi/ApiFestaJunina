@@ -79,9 +79,9 @@ export class ProductSalesService extends ValidateFieldsTemplateMethod {
         }
     }
 
-    async findTop5ProductsOfSales(){
+    async findTopProductsOfSales(rank) {
         try {
-            return await this.#repository.findTop5();
+            return await this.#repository.findTop(rank);
         } catch (error) {
             console.log(error);
             loggers.error(`ProductSales => findTop5ProductsOfSales => erro ao buscar top 5 produtos vendidos ${error.message}`)

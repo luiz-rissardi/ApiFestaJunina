@@ -41,9 +41,10 @@ export class ProductSalesController {
         }
     }
 
-    async getTop5ProductsOfSales(request, response) {
+    async getTopProductsOfSales(request, response) {
         try {
-            const result = await this.#service.findTop5ProductsOfSales();
+            const { rank } = request.params;
+            const result = await this.#service.findTopProductsOfSales(rank);
             response.status(200).json(result);
         } catch (error) {
             response.writeHead(500);

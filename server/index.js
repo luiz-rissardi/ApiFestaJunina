@@ -14,6 +14,7 @@ import { ProductSalesFactory } from './productSales/ProductSalesFactory.js';
 import { StockFactory } from './stock/StockFactory.js';
 import { UserFactory } from './users/UserFactory.js';
 import { ClientFactory } from './clients/clientFactory.js';
+import { TwilioFactory } from './twilio/twilioFactory.js';
 
 config()
 
@@ -61,7 +62,8 @@ export class Server{
         const stockController = StockFactory.createInstance();
         const userController = UserFactory.createInstance();
         const clientController = ClientFactory.createInstance();
-        const routes = new RoutesOfApi({ shoppingController, productSalesController, stockController, userController,clientController }).getRoutes();
+        const twilioController = TwilioFactory.createInstance();
+        const routes = new RoutesOfApi({ shoppingController, productSalesController, stockController, userController,clientController,twilioController }).getRoutes();
         return routes
     }
 }
