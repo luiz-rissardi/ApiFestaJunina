@@ -14,10 +14,10 @@ export class ClientRepository {
         }
     }
 
-    async insertOne(saleId, phone) {
+    async insertOne(orderId, phone) {
         try {
             const connection = await this.#connect();
-            const [result] = await connection.query("INSERT INTO clients (saleId,phone) VALUES (?,?)", [saleId, phone]);
+            const [result] = await connection.query("INSERT INTO clients (orderId,phone) VALUES (?,?)", [orderId, phone]);
             connection.release();
             return result.insertId;
         } catch (error) {

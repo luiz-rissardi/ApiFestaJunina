@@ -1,6 +1,6 @@
 import { ClientController } from "./ClinentController.js";
-import { ClientRepository } from "./ClientRepository.js";
-import { ClientService } from "./ClientService.js";
+import { ClientRepository } from "./clientRepository.js";
+import { ClientService } from "./clientService.js";
 import { MySqlDatabase } from "../../data/MySqlDataBase.js";
 
 export class ClientFactory {
@@ -11,8 +11,7 @@ export class ClientFactory {
             const service = new ClientService({ repository });
             return new ClientController({ service });
         } catch (error) {
-            // console.log(error);
-            throw new Error("não foi possivel construir o ClientSevrice");
+            throw new Error("não foi possivel construir o ClientController");
         }
     }
 }

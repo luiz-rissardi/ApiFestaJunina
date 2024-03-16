@@ -47,9 +47,9 @@ const UsersEntity = {
     }
 }
 
-const shoppingEntity = {
+const orderEntity = {
     //field : type of Field
-    dateOfSale:{
+    dateOfCreate:{
         type:"Date",
         minLength:10
     },
@@ -59,7 +59,7 @@ const shoppingEntity = {
     }
 }
 
-const ordersEntity = {
+const ordersProductsEntity = {
     //field : type of Field
     orderId:{
         type:"string",
@@ -94,8 +94,8 @@ const clientEntity = {
 export {
     productEntity,
     UsersEntity,
-    shoppingEntity,
-    ordersEntity,
+    orderEntity,
+    ordersProductsEntity,
     clientEntity
 }
 

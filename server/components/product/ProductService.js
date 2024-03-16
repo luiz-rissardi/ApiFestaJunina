@@ -15,7 +15,7 @@ export class ProductService extends ValidateFieldsTemplateMethod {
             const products = await this.#repository.findAll();
             return products
         } catch (error) {
-            loggers.error(`product => findAllProductsInproduct => erro ao buscar os dados ${error.message}`)
+            loggers.error(`product => findAllProductsInProduct => erro ao buscar os dados ${error.message}`)
             throw new Error("não foi possivel buscar os dados");
         }
     }
@@ -49,7 +49,7 @@ export class ProductService extends ValidateFieldsTemplateMethod {
         try {
             this.#repository.substractionProduct(updates);
         } catch (error) {
-            loggers.error(`product => substractionOfproduct => erro ao subtrair do estoque => ${error.message}`)
+            loggers.error(`product => substractionOfProduct => erro ao subtrair do estoque => ${error.message}`)
             throw new Error("não foi possivel subtrair do estoque")
         }
     }

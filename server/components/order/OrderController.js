@@ -5,51 +5,46 @@ export class OrderController {
         this.#service = service;
     }
 
-    async insertProductsIntoOrder(request, response) {
+    async getBetweenDate(request, response) {
         try {
-            const { products, orderId } = request.body;
-            const result = await this.#service.insertProdutsIntoOrder(products, orderId)
+            const { dateInitial, dateEnded } = request.params;
+            const orders = await this.#service.findBetweenDate(dateInitial, dateEnded);
+            response.status(200).json(orders)
+        } catch (error) {
+            response.writeHead(500)
+        } finally {
+            response.end();
+        }
+    }
+
+    async getCountTotalOrders(request, response) {
+        try {
+            const countOrders = await this.#service.countTotalOrders();
+            response.status(200).write(String(countOrders));
+        } catch (error) {
+            response.writeHead(500);
+        } finally {
+            response.end();
+        }
+    }
+
+    async createOrder(request,response){
+        try {
+            const { orderId } = request.body;
+            const result = await this.#service.createOrder(orderId);
             response.status(201).json(result)
         } catch (error) {
             response.writeHead(500)
-        } finally {
-            response.end();
-        }
-    }
-
-    async recordOrders(request, response) {
-        try {
-            const { orderId, productId, quantity } = request.body;
-            const result = await this.#service.recordOrders(orderId, quantity, productId);
-            response.status(200).json(result)
-        } catch (error) {
-            response.writeHead(500)
-        } finally {
-            response.end();
-        }
-    }
-
-    async getOrders(request, response) {
-        try {
-            const { orderId, productId } = request.params;
-            const productSales = await this.#service.findOrder(orderId, productId);
-            response.status(200).json(productSales);
-        } catch (error) {
-            response.writeHead(500);
-        } finally {
-            response.end();
-        }
-    }
-
-    async getTopOrders(request, response) {
-        try {
-            const { rank } = request.params;
-            const result = await this.#service.findTopOrders(rank);
-            response.status(200).json(result);
-        } catch (error) {
-            response.writeHead(500);
-        } finally {
+        }finally{
             response.end();
         }
     }
 }
+
+
+
+
+
+
+
+

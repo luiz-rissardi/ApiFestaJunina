@@ -9,8 +9,8 @@ import cors from "cors"
 import { loggers,bodyParse,AcceptDefaultDomain } from "./helpers/helper.js"
 import { MySqlDatabase } from './data/MySqlDataBase.js';
 import { RoutesOfApi } from './routes/routes.js';
-import { ShoppingFactory } from './components/shop/ShoppingFactory.js';
 import { OrderFactory } from './components/order/OrderFactory.js';
+import { OrderProdutsFactory } from './components/orderProducts/OrderProdutsFactory.js';
 import { ProductFactory } from './components/product/ProductFactory.js';
 import { UserFactory } from './components/users/UserFactory.js';
 import { ClientFactory } from './components/clients/clientFactory.js';
@@ -28,6 +28,7 @@ export class Server{
         app.use(cors({
             origin: 'http://localhost:4200'
         }))
+        
         app.use("/api",bodyParse,routes)
         server.listen(process.env.PORT,async ()=>{
             loggers.info(`Server is running at port ${process.env.PORT}`);
@@ -57,12 +58,12 @@ export class Server{
     }
 
     static #instanceDependeces(){
-        const shoppingController = ShoppingFactory.createInstance();
-        const ordersController = OrderFactory.createInstance();
+        const OrderController = OrderFactory.createInstance();
+        const ordersProductController = OrderProdutsFactory.createInstance();
         const productController = ProductFactory.createInstance();
         const userController = UserFactory.createInstance();
         const clientController = ClientFactory.createInstance();
-        const routes = new RoutesOfApi({ shoppingController, ordersController, productController, userController,clientController }).getRoutes();
+        const routes = new RoutesOfApi({ OrderController, ordersProductController, productController, userController,clientController }).getRoutes();
         return routes
     }
 }

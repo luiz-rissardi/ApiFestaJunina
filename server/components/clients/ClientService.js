@@ -9,12 +9,12 @@ export class ClientService extends ValidateFieldsTemplateMethod {
         this.#repository = repository;
     }
 
-    async registerClient(saleId, phone) {
+    async registerClient(orderId, phone) {
         try {
             if (
-                this.validate("saleId", saleId) &&
+                this.validate("orderId", orderId) &&
                 this.validate("phone", phone)) {
-                const commandId = await this.#repository.insertOne(saleId,phone);
+                const commandId = await this.#repository.insertOne(orderId,phone);
                 return commandId;
             } else {
                 loggers.warn(`ClientService => registerClient => falhou ao registar cliente ${this.mesageErrors}`);

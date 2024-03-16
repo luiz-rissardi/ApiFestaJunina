@@ -11,7 +11,7 @@ export class UserFactory{
             const service = new UserService({ repository });
             return new UserController({ service });
         } catch (error) {
-            throw new Error("não doi possivel criar UserService")
+            throw new Error("não doi possivel criar UserController")
         }
     }
 }
