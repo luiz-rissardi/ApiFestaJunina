@@ -1,6 +1,6 @@
 import { UserService  } from "./UserService.js";
 import { UserRepository } from "./UserRepository.js";
-import { MySqlDatabase } from "../data/MySqlDataBase.js";
+import { MySqlDatabase } from "../../data/MySqlDataBase.js";
 import { UserController } from "./UserController.js";
 
 export class UserFactory{

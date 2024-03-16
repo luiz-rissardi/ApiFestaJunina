@@ -9,12 +9,12 @@ import cors from "cors"
 import { loggers,bodyParse,AcceptDefaultDomain } from "./helpers/helper.js"
 import { MySqlDatabase } from './data/MySqlDataBase.js';
 import { RoutesOfApi } from './routes/routes.js';
-import { ShoppingFactory } from './shop/ShoppingFactory.js';
-import { ProductSalesFactory } from './productSales/ProductSalesFactory.js';
-import { StockFactory } from './stock/StockFactory.js';
-import { UserFactory } from './users/UserFactory.js';
-import { ClientFactory } from './clients/clientFactory.js';
-import { TwilioFactory } from './twilio/twilioFactory.js';
+import { ShoppingFactory } from './components/shop/ShoppingFactory.js';
+import { OrderFactory } from './components/order/OrderFactory.js';
+import { ProductFactory } from './components/product/ProductFactory.js';
+import { UserFactory } from './components/users/UserFactory.js';
+import { ClientFactory } from './components/clients/clientFactory.js';
+
 
 config()
 
@@ -58,12 +58,11 @@ export class Server{
 
     static #instanceDependeces(){
         const shoppingController = ShoppingFactory.createInstance();
-        const productSalesController = ProductSalesFactory.createInstance();
-        const stockController = StockFactory.createInstance();
+        const ordersController = OrderFactory.createInstance();
+        const productController = ProductFactory.createInstance();
         const userController = UserFactory.createInstance();
         const clientController = ClientFactory.createInstance();
-        const twilioController = TwilioFactory.createInstance();
-        const routes = new RoutesOfApi({ shoppingController, productSalesController, stockController, userController,clientController,twilioController }).getRoutes();
+        const routes = new RoutesOfApi({ shoppingController, ordersController, productController, userController,clientController }).getRoutes();
         return routes
     }
 }

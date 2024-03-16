@@ -3,34 +3,32 @@ import { Router } from "express";
 
 export class RoutesOfApi {
     #shoppingController;
-    #productSalesController;
-    #stockController;
+    #OrdersController;
+    #productController;
     #userController;
     #clientController;
-    #twilioController;
-    constructor({ shoppingController, productSalesController, stockController, userController, clientController,twilioController }) {
+    constructor({ shoppingController, ordersController, productController, userController, clientController }) {
         this.#shoppingController = shoppingController;
-        this.#productSalesController = productSalesController;
-        this.#stockController = stockController;
+        this.#OrdersController = ordersController;
+        this.#productController = productController;
         this.#userController = userController;
         this.#clientController = clientController;
-        this.#twilioController = twilioController;
     }
 
     getRoutes() {
         const allroutes = Router();
-        allroutes.use(this.#routesOfProductSalesController());
+        allroutes.use(this.#routesOfOrderController());
         allroutes.use(this.#routesOfShoppingController());
-        allroutes.use(this.#routesOfStockController());
+        allroutes.use(this.#routesOfProductController());
         allroutes.use(this.#routesOfUserController());
         allroutes.use(this.#routesOfClient());
-        allroutes.use(this.#routesOfMessagesController());
         return allroutes
     }
 
     #routesOfClient() {
         const routes = Router();
         routes.route("/client").post((req, res) => this.#clientController.handlerClient(req, res));
+        routes.route("/client/:command").get((req, res) => this.#clientController.findbyCommand(req, res));
         return routes;
     }
 
@@ -52,54 +50,55 @@ export class RoutesOfApi {
         return routes
     }
 
-    #routesOfProductSalesController() {
+    #routesOfOrderController() {
         const routes = Router();
 
-        routes.route("/product/sale/:saleId&:productId")
+        routes.route("/product/sale/:orderId&:productId")
             .get((req, res) => {
-                this.#productSalesController.getProductSales(req, res)
+                this.#OrdersController.getOrders(req, res)
             })
 
         routes.route("/product/sale")
             .post((req, res) => {
-                this.#productSalesController.insertProducts(req, res)
+                this.#OrdersController.insertProductsIntoOrder(req, res)
             })
 
-        routes.route("/product/sale/remove").post((req, res) => {
-            this.#productSalesController.recordProductSales(req, res)
-        })
+        routes.route("/product/sale/remove")
+            .post((req, res) => {
+                this.#OrdersController.recordOrders(req, res)
+            })
 
         // busca os top $ produtos das vendas
         routes.route("/product/top")
             .get((req, res) => {
-                this.#productSalesController.getTopProductsOfSales(req, res);
+                this.#OrdersController.getTopOrders(req, res);
             })
 
         routes.route("/product/top/:rank")
             .get((req, res) => {
-                this.#productSalesController.getTopProductsOfSales(req, res);
+                this.#OrdersController.getTopOrders(req, res);
             })
 
 
         return routes
     }
 
-    #routesOfStockController() {
+    #routesOfProductController() {
         const routes = Router();
 
         routes.route("/product")
             .get((req, res) => {
-                this.#stockController.getAllProductsInStock(req, res)
+                this.#productController.getAllProductsInProduct(req, res)
             })
             .post((req, res) => {
-                this.#stockController.createProduct(req, res)
+                this.#productController.createProduct(req, res)
             })
             .put((req, res) => {
-                this.#stockController.updateProduct(req, res)
+                this.#productController.updateProduct(req, res)
             })
 
         routes.route("/product/substraction").post((req, res) => {
-            this.#stockController.substractionStock(req, res)
+            this.#productController.substractionProduct(req, res)
         })
 
 
@@ -124,16 +123,6 @@ export class RoutesOfApi {
 
         routes.route("/user/username").put((req, res) => {
             this.#userController.changeUserName(req, res)
-        })
-
-        return routes
-    }
-
-    #routesOfMessagesController() {
-        const routes = Router();
-
-        routes.route("/message").post((req, res) => {
-            this.#twilioController.sendQrCodeTo(req, res);
         })
 
         return routes

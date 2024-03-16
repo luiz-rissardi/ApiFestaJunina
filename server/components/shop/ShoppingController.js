@@ -30,8 +30,8 @@ export class ShoppingController {
 
     async createSale(request,response){
         try {
-            const { saleId } = request.body;
-            const result = await this.#service.createSale(saleId);
+            const { orderId } = request.body;
+            const result = await this.#service.createSale(orderId);
             response.status(201).json(result)
         } catch (error) {
             response.writeHead(500)

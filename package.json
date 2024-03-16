@@ -4,7 +4,10 @@
   "type": "module",
   "scripts": {
     "back-end": "nodemon ./server/index.js",
-    "carga": "npx autocannon -c 300 -d 10 http://localhost:8723/api/getAllProducts"
+    "carga": "npx autocannon -c 1000 -d 30 http://localhost:8723/api/product",
+    "carga-p": "npx autocannon -c 1000 -d 30 -m POST -b \"{\\\"productName\\\": \\\"carne\\\", \\\"price\\\": 12.9, \\\"quantity\\\": 300}\" -H \"Content-Type: application/json\" http://localhost:8723/api/product",
+    "c":"npx climem 8999",
+    "s-c":"set CLIMEM=8999 && node -r climem ./server/index.js"
   },
   "private": true,
   "dependencies": {
@@ -13,8 +16,12 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mysql2": "^3.5.2",
+    "node-telegram-bot-api": "^0.65.1",
     "nodemon": "^3.0.1",
-    "twilio": "^4.23.0",
     "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "climem": "^2.0.0",
+    "clinic": "^13.0.0"
   }
 }

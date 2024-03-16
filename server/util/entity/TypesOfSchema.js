@@ -1,5 +1,5 @@
 
-const StockEntity = {
+const productEntity = {
     //field : type of Field
     productId:{
         type:"number",
@@ -53,15 +53,15 @@ const shoppingEntity = {
         type:"Date",
         minLength:10
     },
-    saleId:{
+    orderId:{
         type:"string",
         minLength:32
     }
 }
 
-const productSalesEntity = {
+const ordersEntity = {
     //field : type of Field
-    saleId:{
+    orderId:{
         type:"string",
         minLength:32
     },
@@ -77,11 +77,11 @@ const productSalesEntity = {
         type:"number",
         minLength:1
     },
-    ...StockEntity
+    ...productEntity
 }
 
 const clientEntity = {
-    saleId:{
+    orderId:{
         type:"string",
         minLength:32
     },
@@ -92,10 +92,10 @@ const clientEntity = {
 }
 
 export {
-    StockEntity,
+    productEntity,
     UsersEntity,
     shoppingEntity,
-    productSalesEntity,
+    ordersEntity,
     clientEntity
 }
 

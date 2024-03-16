@@ -1,6 +1,6 @@
-import { loggers } from "../helpers/helper.js"
-import { ValidateFieldsTemplateMethod } from "../util/TemplateMethods/ValidadetFileds.js";
-import { UsersEntity } from "../util/entity/TypesOfSchema.js"
+import { loggers } from "../../helpers/helper.js"
+import { ValidateFieldsTemplateMethod } from "../../util/TemplateMethods/ValidadetFileds.js";
+import { UsersEntity } from "../../util/entity/TypesOfSchema.js"
 import { AuthService } from "./Auth/Auth.js";
 
 export class UserService extends ValidateFieldsTemplateMethod {

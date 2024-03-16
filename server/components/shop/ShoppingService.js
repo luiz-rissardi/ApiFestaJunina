@@ -1,6 +1,6 @@
-import { DateFormat, loggers } from "../helpers/helper.js";
-import { ValidateFieldsTemplateMethod } from "../util/TemplateMethods/ValidadetFileds.js";
-import { shoppingEntity } from "../util/entity/TypesOfSchema.js";
+import { DateFormat, loggers } from "../../helpers/helper.js";
+import { ValidateFieldsTemplateMethod } from "../../util/TemplateMethods/ValidadetFileds.js";
+import { shoppingEntity } from "../../util/entity/TypesOfSchema.js";
 
 export class ShoppingService extends ValidateFieldsTemplateMethod {
     #repository
@@ -34,14 +34,14 @@ export class ShoppingService extends ValidateFieldsTemplateMethod {
         }
     }
 
-    async createSale(saleId) {
+    async createSale(orderId) {
         try {
             const dateOfSale = DateFormat(new Date());
-            await this.#repository.insertOne(dateOfSale,saleId);
+            await this.#repository.insertOne(dateOfSale,orderId);
             return {
                 message: "venda criada com sucesso!",
                 type: "valid",
-                saleId
+                orderId
             }
         } catch (error) {
             loggers.error(`ShoppingController => createSale => erro ao criar uma nova venda ${error.message}`);

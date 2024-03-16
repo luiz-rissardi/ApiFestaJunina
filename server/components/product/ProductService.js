@@ -1,21 +1,21 @@
 
-import { loggers } from "../helpers/helper.js";
-import { ValidateFieldsTemplateMethod } from "../util/TemplateMethods/ValidadetFileds.js";
-import { StockEntity } from "../util/entity/TypesOfSchema.js"
+import { loggers } from "../../helpers/helper.js";
+import { ValidateFieldsTemplateMethod } from "../../util/TemplateMethods/ValidadetFileds.js";
+import { productEntity } from "../../util/entity/TypesOfSchema.js"
 
-export class StockService extends ValidateFieldsTemplateMethod {
+export class ProductService extends ValidateFieldsTemplateMethod {
     #repository;
     constructor({ repository }) {
-        super({ typeOfSchema: StockEntity });
+        super({ typeOfSchema: productEntity });
         this.#repository = repository;
     }
 
-    async findAllProductsInStock() {
+    async findAllProductsInProduct() {
         try {
             const products = await this.#repository.findAll();
             return products
         } catch (error) {
-            loggers.error(`Stock => findAllProductsInStock => erro ao buscar os dados ${error.message}`)
+            loggers.error(`product => findAllProductsInproduct => erro ao buscar os dados ${error.message}`)
             throw new Error("não foi possivel buscar os dados");
         }
     }
@@ -33,23 +33,23 @@ export class StockService extends ValidateFieldsTemplateMethod {
                     type: "valid"
                 }
             } else {
-                loggers.error(`Stock => updateProduct => Validação de produto falhou ${this.mesageErrors}`);
+                loggers.error(`product => updateProduct => Validação de produto falhou ${this.mesageErrors}`);
                 return {
                     message: "Produto inválido. Verifique os dados fornecidos.",
                     type: "invalid"
                 }
             }
         } catch (error) {
-            loggers.error(`Stock => updateProduct => erro ao atualizar os dados ${error.message}`)
+            loggers.error(`product => updateProduct => erro ao atualizar os dados ${error.message}`)
             throw new Error("não foi possivel atualizar o produto")
         }
     }
 
-    async substractionOfStock(updates){
+    async substractionOfProduct(updates){
         try {
-            this.#repository.substractionStock(updates);
+            this.#repository.substractionProduct(updates);
         } catch (error) {
-            loggers.error(`stock => substractionOfStock => erro ao subtrair do estoque => ${error.message}`)
+            loggers.error(`product => substractionOfproduct => erro ao subtrair do estoque => ${error.message}`)
             throw new Error("não foi possivel subtrair do estoque")
         }
     }
@@ -58,7 +58,7 @@ export class StockService extends ValidateFieldsTemplateMethod {
         try {
             product.price = Number(product.price)
             product.quantity = Number(product.quantity)
-            if (this.#validateProduct(product)) {
+            if (this.#validateProduct(product) && product.price > 0) {
                 const productId = await this.#repository.insertOne(product)
                 return {
                     message: "produto salvo com sucesso",
@@ -66,7 +66,7 @@ export class StockService extends ValidateFieldsTemplateMethod {
                     productId
                 }
             } else {
-                loggers.error(`Stock => createProduct => Validação do produto falhou ${this.mesageErrors}`)
+                loggers.error(`product => createProduct => Validação do produto falhou ${this.mesageErrors}`)
                 return {
                     message: "Produto inválido. Verifique os dados fornecidos.",
                     type: "invalid"
@@ -74,7 +74,7 @@ export class StockService extends ValidateFieldsTemplateMethod {
             }
         } catch (error) {
             console.log(error);
-            loggers.error(`Stock => createProduct => erro ao criar um produto ${error.message}`)
+            loggers.error(`product => createProduct => erro ao criar um produto ${error.message}`)
             throw new Error("não foi possivel createProduct o produto")
         }
     }

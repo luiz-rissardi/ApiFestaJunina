@@ -1,6 +1,6 @@
 
 
-export class StockRepository {
+export class ProductRepository {
 
     #connection
     constructor({ connection }) {
@@ -18,9 +18,9 @@ export class StockRepository {
     async findAll() {
         try {
             const connection = await this.#connect();
-            const [productsInStock] = await connection.query("SELECT * FROM stock where active = true");
+            const [productsInproduct] = await connection.query("SELECT * FROM products where active = true");
             connection.release()
-            return productsInStock;
+            return productsInproduct;
         } catch (error) {
             throw new Error(error.message)
         }
@@ -29,7 +29,7 @@ export class StockRepository {
     async updateOne(productId, product) {
         try {
             const connection = await this.#connect();
-            await connection.query(`UPDATE stock SET productName = ? ,price = ?, quantity = ?, active = ?, productChosen = ? WHERE productId = ?`,
+            await connection.query(`UPDATE products SET productName = ? ,price = ?, quantity = ?, active = ?, productChosen = ? WHERE productId = ?`,
                 [
                     product?.productName,
                     product?.price,
@@ -46,17 +46,18 @@ export class StockRepository {
         }
     }
 
-    async substractionStock(updates) {
+    async substractionProduct(updates) {
         try {
             const connection = await this.#connect();
             await connection.beginTransaction();
             for await (let update of updates) {
-                connection.query("UPDATE stock SET quantity = quantity - ? WHERE productId = ?", [Number(update.quantity), update.productId])
+                connection.query("UPDATE products SET quantity = quantity - ? WHERE productId = ?", [Number(update.quantity), update.productId])
             }
             await connection.commit();
             connection.release();
         } catch (error) {
-            throw new Error(error.message)
+            console.log(error);
+            //throw new Error(error.message)
         }
     }
 
@@ -64,7 +65,7 @@ export class StockRepository {
         try {
             const { productName, price, quantity } = product;
             const connection = await this.#connect();
-            const [result] = await connection.query("INSERT INTO stock (productName,price,quantity,active,productChosen) VALUES (?, ?, ?, true,false)", [productName, price, quantity, true])
+            const [result] = await connection.query("INSERT INTO products (productName,price,quantity,active,productChosen) VALUES (?, ?, ?, true,false)", [productName, price, quantity, true])
             connection.release();
             return result.insertId;
         } catch (error) {

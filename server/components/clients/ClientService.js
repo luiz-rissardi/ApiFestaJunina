@@ -1,6 +1,6 @@
-import { ValidateFieldsTemplateMethod } from "../util/TemplateMethods/ValidadetFileds.js";
-import { clientEntity } from "../util/entity/TypesOfSchema.js";
-import { loggers } from "../helpers/helper.js";
+import { ValidateFieldsTemplateMethod } from "../../util/TemplateMethods/ValidadetFileds.js";
+import { clientEntity } from "../../util/entity/TypesOfSchema.js";
+import { loggers } from "../../helpers/helper.js";
 
 export class ClientService extends ValidateFieldsTemplateMethod {
     #repository
@@ -14,8 +14,8 @@ export class ClientService extends ValidateFieldsTemplateMethod {
             if (
                 this.validate("saleId", saleId) &&
                 this.validate("phone", phone)) {
-                await this.#repository.insertOne(saleId,phone);
-                return;
+                const commandId = await this.#repository.insertOne(saleId,phone);
+                return commandId;
             } else {
                 loggers.warn(`ClientService => registerClient => falhou ao registar cliente ${this.mesageErrors}`);
                 return {
@@ -42,6 +42,16 @@ export class ClientService extends ValidateFieldsTemplateMethod {
             }
         } catch (error) {
             loggers.error(`ClientService => registerClient => erro ao buscar cliente ${error.message}`);
+            throw new Error("não foi possivel buscar cliente")
+        }
+    }
+
+    async getClientByCommand(command){
+        try {
+            const client = await this.#repository.findByCommand(command);
+            return client
+        } catch (error) {
+            loggers.error(`ClientService => findbyCommand => erro ao buscar cliente ${error.message}`);
             throw new Error("não foi possivel buscar cliente")
         }
     }

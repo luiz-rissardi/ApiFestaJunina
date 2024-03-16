@@ -1,13 +1,13 @@
 
-export class StockController {
+export class ProductController {
     #service;
     constructor({ service }) {
         this.#service = service;
     }
 
-    async getAllProductsInStock(request, response) {
+    async getAllProductsInProduct(request, response) {
         try {
-            const data = await this.#service.findAllProductsInStock();
+            const data = await this.#service.findAllProductsInProduct();
             response.json(data)
         } catch (error) {
             console.log(error);
@@ -29,10 +29,10 @@ export class StockController {
         }
     }
 
-    async substractionStock(request, response) {
+    async substractionProduct(request, response) {
         try {
             const { updates } = request.body;
-            this.#service.substractionOfStock(updates);
+            this.#service.substractionOfProduct(updates);
         } catch (error) {
             response.writeHead(500);
         } finally {

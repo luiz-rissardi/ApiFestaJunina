@@ -24,16 +24,16 @@ export class ShoppingRepository {
         }
     }
 
-    async insertOne(dateOfSale, saleId) {
+    async insertOne(dateOfSale, orderId) {
         try {
             const connection = await this.#connect();
-                const [existingRecord] = await connection.query('SELECT saleId FROM shopping WHERE saleId = ?', [saleId]);
+                const [existingRecord] = await connection.query('SELECT orderId FROM shopping WHERE orderId = ?', [orderId]);
     
             if (existingRecord.length === 0) {
-                await connection.query('INSERT INTO shopping (saleId, dateOfSale) VALUES (?, ?)', [saleId, dateOfSale]);
+                await connection.query('INSERT INTO shopping (orderId, dateOfSale) VALUES (?, ?)', [orderId, dateOfSale]);
                 connection.release();
             }
-            return saleId;
+            return orderId;
         } catch (error) {
             throw new Error(error.message)
         }
@@ -42,7 +42,7 @@ export class ShoppingRepository {
     async count() {
         try {
             const connection = await this.#connect()
-            const [result] = await connection.query("SELECT saleId FROM shopping")
+            const [result] = await connection.query("SELECT orderId FROM shopping")
             connection.release()
             return result.length
         } catch (error) {

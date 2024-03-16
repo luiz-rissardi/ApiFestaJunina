@@ -1,6 +1,6 @@
 import { ShoppingRepository } from "./ShoppingRepository.js";
 import { ShoppingService } from "./ShoppingService.js";
-import { MySqlDatabase } from "../data/MySqlDataBase.js";
+import { MySqlDatabase } from "../../data/MySqlDataBase.js";
 import { ShoppingController } from "./ShoppingController.js";
 
 

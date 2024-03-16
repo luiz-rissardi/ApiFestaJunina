@@ -17,9 +17,9 @@ export class ClientRepository {
     async insertOne(saleId, phone) {
         try {
             const connection = await this.#connect();
-            await connection.query("INSERT INTO clients VALUES (?,?)", [saleId, phone]);
+            const [result] = await connection.query("INSERT INTO clients (saleId,phone) VALUES (?,?)", [saleId, phone]);
             connection.release();
-            return;
+            return result.insertId;
         } catch (error) {
             console.log(error);
             throw new Error(`Erro ao registrar cliente ${error.message}`)
@@ -30,6 +30,17 @@ export class ClientRepository {
         try {
             const connection = await this.#connect();
             const [[client]] = await connection.query("SELECT * FROM clients WHERE phone = ?", [phone]);
+            connection.release();
+            return client;
+        } catch (error) {
+            throw new Error(`Erro ao buscar cliente: ${error.message}`);
+        }
+    }
+
+    async findByCommand(command) {
+        try {
+            const connection = await this.#connect();
+            const [[client]] = await connection.query("SELECT * FROM clients WHERE command = ?", [command]);
             connection.release();
             return client;
         } catch (error) {
