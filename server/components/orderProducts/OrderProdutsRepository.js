@@ -17,7 +17,7 @@ export class OrderProdutsRepository {
     async insertMany(orders) {
         try {
             const connection = await this.#connect();
-            await connection.query(`INSERT INTO order_procuts  VALUES ?`, [orders]);
+            await connection.query(`INSERT INTO order_products  VALUES ?`, [orders]);
             connection.release();
             return;
         } catch (error) {
@@ -28,7 +28,7 @@ export class OrderProdutsRepository {
     async updateQuantityOne(productId, orderId, quantity) {
         try {
             const connection = await this.#connect();
-            await connection.query(`UPDATE order_procuts 
+            await connection.query(`UPDATE order_products 
             SET quantity = quantity - ? 
             WHERE orderId = ? 
             AND productId = ?
@@ -44,7 +44,7 @@ export class OrderProdutsRepository {
         try {
             const connection = await this.#connect();
             const [[orders]] = await connection.query(`SELECT orderId, productId, SUM(quantity) AS quantity, SUM(totalPrice) AS totalPrice
-            FROM order_procuts
+            FROM order_products
             WHERE orderId = ? AND productId = ?
             GROUP BY orderId, productId`, [orderId, productId]);
             connection.release();
@@ -58,7 +58,7 @@ export class OrderProdutsRepository {
         try {
             const connection = await this.#connect();
             const [product] = await connection.query(` SELECT *
-            FROM order_procuts
+            FROM order_products
             WHERE productId = ? and 
             orderId = ?`, [productId, orderId]);
             connection.release();
@@ -71,7 +71,7 @@ export class OrderProdutsRepository {
     async insertOne(order) {
         try {
             const connection = await this.#connect();
-            await connection.query(`INSERT INTO order_procuts  VALUES (?,?,?,?)`
+            await connection.query(`INSERT INTO order_products  VALUES (?,?,?,?)`
                 ,[order.orderId, order.productId, order.totalPrice, order.quantity]
             );
             connection.release();
@@ -86,7 +86,7 @@ export class OrderProdutsRepository {
             const connection = await this.#connect();
             const [products] = await connection.query(`
             select  ST.productName , SUM(PS.totalPrice) as totalPrice
-            from order_procuts as PS
+            from order_products as PS
             inner join products as ST on ST.productId = PS.productId
             group by productName
             order by totalPrice desc
@@ -102,7 +102,7 @@ export class OrderProdutsRepository {
         try {
             const connection = await this.#connect();
             await connection.query(` 
-            UPDATE order_procuts
+            UPDATE order_products
             SET quantity = quantity + ?,
                 totalPrice = totalPrice + ?
             WHERE orderId = ? AND 
