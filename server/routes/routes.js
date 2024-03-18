@@ -2,17 +2,19 @@ import { Router } from "express";
 
 
 export class RoutesOfApi {
-    #OrderController;
-    #OrdersProductController;
+    #orderController;
+    #ordersProductController;
     #productController;
     #userController;
     #clientController;
-    constructor({ OrderController, ordersProductController, productController, userController, clientController }) {
-        this.#OrderController = OrderController;
-        this.#OrdersProductController = ordersProductController;
+    #commandController;
+    constructor({ commandController, orderController, ordersProductController, productController, userController, clientController }) {
+        this.#orderController = orderController;
+        this.#ordersProductController = ordersProductController;
         this.#productController = productController;
         this.#userController = userController;
         this.#clientController = clientController;
+        this.#commandController = commandController;
     }
 
     getRoutes() {
@@ -22,13 +24,32 @@ export class RoutesOfApi {
         allroutes.use(this.#routesOfProductController());
         allroutes.use(this.#routesOfUserController());
         allroutes.use(this.#routesOfClient());
+        allroutes.use(this.#routesOfCommands());
         return allroutes
+    }
+
+    #routesOfCommands() {
+        const routes = Router();
+
+        routes.route("/command/:commandId")
+            .get((req, res) => this.#commandController.getCommandById(req, res));
+
+        routes.route("/command")
+            .get((req, res) => this.#commandController.getAvaibleCommand(req,res))
+            .post((req, res) => this.#commandController.getCommandByUrl(req, res))
+            .patch((req, res) => this.#commandController.patchCommand(req, res))
+
+        return routes
     }
 
     #routesOfClient() {
         const routes = Router();
-        routes.route("/client").post((req, res) => this.#clientController.handlerClient(req, res));
-        routes.route("/client/:command").get((req, res) => this.#clientController.findbyCommand(req, res));
+        routes.route("/client")
+            .post((req, res) => this.#clientController.handlerClient(req, res));
+
+        routes.route("/client/:command")
+            .get((req, res) => this.#clientController.findByCommand(req, res));
+
         return routes;
     }
 
@@ -36,15 +57,15 @@ export class RoutesOfApi {
         const routes = Router()
 
         routes.route("/order/:dateInitial/:dateEnded").get((req, res) => {
-            this.#OrderController.getBetweenDate(req, res)
+            this.#orderController.getBetweenDate(req, res)
         })
 
         routes.route("/order/count").get((req, res) => {
-            this.#OrderController.getCountTotalOrders(req, res)
+            this.#orderController.getCountTotalOrders(req, res)
         })
 
         routes.route("/order").post((req, res) => {
-            this.#OrderController.createOrder(req, res)
+            this.#orderController.createOrder(req, res)
         })
 
         return routes
@@ -55,26 +76,26 @@ export class RoutesOfApi {
 
         routes.route("/order/product/:orderId&:productId")
             .get((req, res) => {
-                this.#OrdersProductController.getOrdersProduct(req, res)
+                this.#ordersProductController.getOrdersProduct(req, res)
             })
 
         routes.route("/order/product")
             .post((req, res) => {
-                this.#OrdersProductController.insertProductsIntoOrder(req, res)
+                this.#ordersProductController.insertProductsIntoOrder(req, res)
             })
             .put((req, res) => {
-                this.#OrdersProductController.recordOrders(req, res)
+                this.#ordersProductController.recordOrders(req, res)
             })
 
         // busca os top $ produtos das vendas
         routes.route("/order/product/top")
             .get((req, res) => {
-                this.#OrdersProductController.getTopOrdersProduct(req, res);
+                this.#ordersProductController.getTopOrdersProduct(req, res);
             })
 
         routes.route("/order/product/top/:rank")
             .get((req, res) => {
-                this.#OrdersProductController.getTopOrdersProduct(req, res);
+                this.#ordersProductController.getTopOrdersProduct(req, res);
             })
 
 

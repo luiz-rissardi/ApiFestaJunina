@@ -14,8 +14,7 @@ export class ClientService extends ValidateFieldsTemplateMethod {
             if (
                 this.validate("orderId", orderId) &&
                 this.validate("phone", phone)) {
-                const commandId = await this.#repository.insertOne(orderId,phone);
-                return commandId;
+                await this.#repository.insertOne(orderId,phone);
             } else {
                 loggers.warn(`ClientService => registerClient => falhou ao registar cliente ${this.mesageErrors}`);
                 return {
@@ -42,16 +41,6 @@ export class ClientService extends ValidateFieldsTemplateMethod {
             }
         } catch (error) {
             loggers.error(`ClientService => registerClient => erro ao buscar cliente ${error.message}`);
-            throw new Error("não foi possivel buscar cliente")
-        }
-    }
-
-    async getClientByCommand(command){
-        try {
-            const client = await this.#repository.findByCommand(command);
-            return client
-        } catch (error) {
-            loggers.error(`ClientService => findbyCommand => erro ao buscar cliente ${error.message}`);
             throw new Error("não foi possivel buscar cliente")
         }
     }

@@ -1,7 +1,7 @@
-import { OrderRepository } from "./orderRepository.js";
-import { OrderService } from "./orderService.js";
+import { OrderRepository } from "./OrderRepository.js";
+import { OrderService } from "./OrderService.js";
 import { MySqlDatabase } from "../../data/MySqlDataBase.js";
-import { OrderController } from "./orderController.js";
+import { OrderController } from "./OrderController.js";
 
 
 export class OrderFactory{

@@ -30,8 +30,8 @@ export class OrderController {
 
     async createOrder(request,response){
         try {
-            const { orderId } = request.body;
-            const result = await this.#service.createOrder(orderId);
+            const { orderId, commandId } = request.body;
+            const result = await this.#service.createOrder(orderId,commandId);
             response.status(201).json(result)
         } catch (error) {
             response.writeHead(500)

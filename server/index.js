@@ -14,6 +14,7 @@ import { OrderProdutsFactory } from './components/orderProducts/OrderProdutsFact
 import { ProductFactory } from './components/product/ProductFactory.js';
 import { UserFactory } from './components/users/UserFactory.js';
 import { ClientFactory } from './components/clients/clientFactory.js';
+import { CommandFactory } from './components/commands/CommandsFactory.js';
 
 
 config()
@@ -58,12 +59,13 @@ export class Server{
     }
 
     static #instanceDependeces(){
-        const OrderController = OrderFactory.createInstance();
+        const orderController = OrderFactory.createInstance();
         const ordersProductController = OrderProdutsFactory.createInstance();
         const productController = ProductFactory.createInstance();
         const userController = UserFactory.createInstance();
         const clientController = ClientFactory.createInstance();
-        const routes = new RoutesOfApi({ OrderController, ordersProductController, productController, userController,clientController }).getRoutes();
+        const commandController = CommandFactory.createInstance();
+        const routes = new RoutesOfApi({ commandController, orderController, ordersProductController, productController, userController,clientController }).getRoutes();
         return routes
     }
 }

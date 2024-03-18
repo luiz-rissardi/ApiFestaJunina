@@ -11,7 +11,7 @@ export class ProductFactory{
             const service = new ProductService({ repository });
             return new ProductController({ service });
         } catch (error) {
-            throw new Error("não doi possivel criar productService")
+            throw new Error("não doi possivel criar productController")
         }
     }
 }

@@ -16,7 +16,7 @@ export class OrderRepository {
     async findBetweenDate(initialDate, endDate) {
         try {
             const connection = await this.#connect();
-            const [result] = await connection.query("SELECT * FROM orders WHERE dateOfCreate between ? and ? ",[initialDate,endDate])
+            const [result] = await connection.query("SELECT * FROM orders WHERE dateOfCreate between ? and ? ", [initialDate, endDate])
             connection.release();
             return result;
         } catch (error) {
@@ -24,15 +24,22 @@ export class OrderRepository {
         }
     }
 
-    async insertOne(dateOfCreate, orderId) {
+    async getOne(orderId) {
         try {
             const connection = await this.#connect();
-                const [existingRecord] = await connection.query('SELECT orderId FROM orders WHERE orderId = ?', [orderId]);
-    
-            if (existingRecord.length === 0) {
-                await connection.query('INSERT INTO orders (orderId, dateOfCreate) VALUES (?, ?)', [orderId, dateOfCreate]);
-                connection.release();
-            }
+            const [order] = await connection.query('SELECT orderId FROM orders WHERE orderId = ?', [orderId]);
+            connection.release();
+            return order
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async insertOne(dateOfCreate, orderId,commandId) {
+        try {
+            const connection = await this.#connect();
+            await connection.query('INSERT INTO orders (orderId, dateOfCreate,commandId,avaible) VALUES (?,?,?,true)', [orderId, dateOfCreate,commandId]);
+            connection.release();
             return orderId;
         } catch (error) {
             throw new Error(error.message)

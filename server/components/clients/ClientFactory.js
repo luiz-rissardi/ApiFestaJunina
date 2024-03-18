@@ -1,4 +1,4 @@
-import { ClientController } from "./ClinentController.js";
+import { ClientController } from "./ClientController.js";
 import { ClientRepository } from "./clientRepository.js";
 import { ClientService } from "./clientService.js";
 import { MySqlDatabase } from "../../data/MySqlDataBase.js";

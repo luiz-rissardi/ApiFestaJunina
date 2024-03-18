@@ -34,14 +34,23 @@ export class OrderService extends ValidateFieldsTemplateMethod {
         }
     }
 
-    async createOrder(orderId) {
+    async createOrder(orderId,commandId) {
         try {
             const dateOfCreate = DateFormat(new Date());
-            await this.#repository.insertOne(dateOfCreate,orderId);
-            return {
-                message: "venda criada com sucesso!",
-                type: "valid",
-                orderId
+            const orderExists = (await this.#repository.getOne(orderId)).length
+            if (orderExists == 0) {
+                await this.#repository.insertOne(dateOfCreate, orderId,commandId);
+                return {
+                    message: "venda criada com sucesso!",
+                    type: "valid",
+                    orderId
+                }
+            }else{
+                return {
+                    message: "venda criada com sucesso!",
+                    type: "valid",
+                    orderId
+                }
             }
         } catch (error) {
             loggers.error(`OrderController => createOrder => erro ao criar uma nova venda ${error.message}`);

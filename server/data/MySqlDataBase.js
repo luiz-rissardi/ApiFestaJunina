@@ -14,8 +14,8 @@ export class MySqlDatabase {
             }
             return this.connection
         } catch (error) {
-            loggers.error(error)
-            throw new Error(error.message);
+            console.log(error);
+            //throw new Error(error.message);
         }
     }
 }

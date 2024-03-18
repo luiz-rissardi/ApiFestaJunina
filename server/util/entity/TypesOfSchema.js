@@ -91,12 +91,28 @@ const clientEntity = {
     }
 }
 
+const commandsEntity = {
+    commandId:{
+        type:"number",
+        minLength:1
+    },
+    commandUrl:{
+        type:"string",
+        minLength:32
+    },
+    avaible:{
+        type:"boolean",
+        minLength:0
+    }
+}
+
 export {
     productEntity,
     UsersEntity,
     orderEntity,
     ordersProductsEntity,
-    clientEntity
+    clientEntity,
+    commandsEntity
 }
 
 
