@@ -56,4 +56,16 @@ export class OrderRepository {
             throw new Error(error.message)
         }
     }
+
+    async inativeOrder(commandId){
+        try {
+            const connection = await this.#connect();
+            await connection.query(`UPDATE orders set avaible = false WHERE commandId = ? and avaible = true 
+            `,[commandId])
+            connection.release();
+            return ;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
 }

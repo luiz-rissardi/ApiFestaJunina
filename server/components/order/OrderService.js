@@ -57,4 +57,14 @@ export class OrderService extends ValidateFieldsTemplateMethod {
             throw new Error("não foi possivel criar venda!")
         }
     }
+
+    async inativeOrder(commandId) {
+        try {
+            this.#repository.inativeOrder(commandId);
+            return;
+        } catch (error) {
+            loggers.error(`OrderController => updateOrder => erro ao atualizar a venda ${error.message}`);
+            throw new Error("não foi possivel atualizar a venda!")
+        }
+    }
 }

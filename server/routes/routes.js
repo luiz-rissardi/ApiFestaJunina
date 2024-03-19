@@ -35,7 +35,7 @@ export class RoutesOfApi {
             .get((req, res) => this.#commandController.getCommandById(req, res));
 
         routes.route("/command")
-            .get((req, res) => this.#commandController.getAvaibleCommand(req,res))
+            .get((req, res) => this.#commandController.getAvaibleCommand(req, res))
             .post((req, res) => this.#commandController.getCommandByUrl(req, res))
             .patch((req, res) => this.#commandController.patchCommand(req, res))
 
@@ -64,9 +64,13 @@ export class RoutesOfApi {
             this.#orderController.getCountTotalOrders(req, res)
         })
 
-        routes.route("/order").post((req, res) => {
-            this.#orderController.createOrder(req, res)
-        })
+        routes.route("/order")
+            .post((req, res) => {
+                this.#orderController.createOrder(req, res)
+            })
+            .patch((req,res) =>{
+                this.#orderController.inativeOrder(req,res)
+            })
 
         return routes
     }

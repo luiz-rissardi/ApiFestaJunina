@@ -23,7 +23,7 @@ export class OrderProdutsService extends ValidateFieldsTemplateMethod {
                     }
                 })
                 return {
-                    message: "produtos inseridos com sucesso!",
+                    message: "venda realizada com com sucesso!",
                     type: "valid"
                 }
             }

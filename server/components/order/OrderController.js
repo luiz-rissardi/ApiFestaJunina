@@ -39,6 +39,17 @@ export class OrderController {
             response.end();
         }
     }
+
+    async inativeOrder(request,response){
+        try {
+            const { commandId } = request.body;
+            await this.#service.inativeOrder(commandId)
+        } catch (error) {
+            response.writeHead(500);
+        }finally{
+            response.end();
+        }
+    }
 }
 
 
