@@ -23,4 +23,16 @@ export class ClientController {
             response.end();
         }
     }
+
+    async getClient(request, response) {
+        try {
+            const { phone } = request.params;
+            const client = await this.#service.getClient(phone)
+            response.json(client);
+        } catch (error) {
+            response.writeHead(500);
+        } finally {
+            response.end();
+        }
+    }
 }

@@ -39,6 +39,9 @@ export class RoutesOfApi {
             .post((req, res) => this.#commandController.getCommandByUrl(req, res))
             .patch((req, res) => this.#commandController.patchCommand(req, res))
 
+        routes.route("/command/inactive")
+            .post((req, res) => this.#commandController.inactiveCommand(req, res))
+
         return routes
     }
 
@@ -47,8 +50,11 @@ export class RoutesOfApi {
         routes.route("/client")
             .post((req, res) => this.#clientController.handlerClient(req, res));
 
+        routes.route("/client/:phone")
+            .get((req, res) => this.#clientController.getClient(req, res));
+
         routes.route("/client/:command")
-            .get((req, res) => this.#clientController.findByCommand(req, res));
+            .get((req, res) => this.#clientController.findEByCommand(req, res));
 
         return routes;
     }
@@ -68,8 +74,11 @@ export class RoutesOfApi {
             .post((req, res) => {
                 this.#orderController.createOrder(req, res)
             })
-            .patch((req,res) =>{
-                this.#orderController.inativeOrder(req,res)
+            .put((req, res) => {
+                this.#orderController.putCommandInOrder(req, res)
+            })
+            .patch((req, res) => {
+                this.#orderController.inativeOrder(req, res)
             })
 
         return routes

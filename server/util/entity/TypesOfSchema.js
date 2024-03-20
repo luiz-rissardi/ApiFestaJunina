@@ -55,7 +55,7 @@ const orderEntity = {
     },
     orderId:{
         type:"string",
-        minLength:32
+        minLength:20
     }
 }
 
@@ -63,7 +63,7 @@ const ordersProductsEntity = {
     //field : type of Field
     orderId:{
         type:"string",
-        minLength:32
+        minLength:20
     },
     productId:{
         type:"number",
@@ -83,7 +83,7 @@ const ordersProductsEntity = {
 const clientEntity = {
     orderId:{
         type:"string",
-        minLength:32
+        minLength:20
     },
     phone:{
         type:"string",
@@ -98,7 +98,7 @@ const commandsEntity = {
     },
     commandUrl:{
         type:"string",
-        minLength:32
+        minLength:20
     },
     avaible:{
         type:"boolean",

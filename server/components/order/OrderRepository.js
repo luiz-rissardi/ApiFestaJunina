@@ -27,7 +27,7 @@ export class OrderRepository {
     async getOne(orderId) {
         try {
             const connection = await this.#connect();
-            const [order] = await connection.query('SELECT orderId FROM orders WHERE orderId = ?', [orderId]);
+            const [order] = await connection.query('SELECT * FROM orders WHERE orderId = ?', [orderId]);
             connection.release();
             return order
         } catch (error) {
@@ -35,10 +35,10 @@ export class OrderRepository {
         }
     }
 
-    async insertOne(dateOfCreate, orderId,commandId) {
+    async insertOne(dateOfCreate, orderId, commandId) {
         try {
             const connection = await this.#connect();
-            await connection.query('INSERT INTO orders (orderId, dateOfCreate,commandId,avaible) VALUES (?,?,?,true)', [orderId, dateOfCreate,commandId]);
+            await connection.query('INSERT INTO orders (orderId, dateOfCreate,commandId,avaible) VALUES (?,?,?,true)', [orderId, dateOfCreate, commandId]);
             connection.release();
             return orderId;
         } catch (error) {
@@ -57,13 +57,24 @@ export class OrderRepository {
         }
     }
 
-    async inativeOrder(commandId){
+    async inativeOrder(commandId) {
         try {
             const connection = await this.#connect();
             await connection.query(`UPDATE orders set avaible = false WHERE commandId = ? and avaible = true 
-            `,[commandId])
+            `, [commandId])
             connection.release();
-            return ;
+            return;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    async putOne(orderId, newCommandId) {
+        try {
+            const connection = await this.#connect();
+            await connection.query(`UPDATE orders SET commandId = ? WHERE orderId = ?`, [newCommandId, orderId])
+            connection.release();
+            return;
         } catch (error) {
             throw new Error(error.message);
         }

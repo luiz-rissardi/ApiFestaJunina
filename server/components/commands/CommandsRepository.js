@@ -16,7 +16,7 @@ export class CommandsRepository {
     async findByCommandId(commandId) {
         try {
             const connection = await this.#connect();
-            const [command] = await connection.query("SELECT * FROM commands WHERE commandId = ?", [commandId]);
+            const [command] = await connection.query("SELECT * FROM commands WHERE commandId = ? and valid = true", [commandId]);
             connection.release();
             return command
         } catch (error) {
@@ -27,7 +27,7 @@ export class CommandsRepository {
     async findByCommandUrl(commandUrl) {
         try {
             const connection = await this.#connect();
-            const [command] = await connection.query("SELECT * FROM commands WHERE commandUrl = ?", [commandUrl]);
+            const [command] = await connection.query("SELECT * FROM commands WHERE commandUrl = ? and valid = true", [commandUrl]);
             connection.release();
             return command
         } catch (error) {
@@ -35,10 +35,10 @@ export class CommandsRepository {
         }
     }
 
-    async putCommand(commandId,value) {
+    async putCommand(commandId, value) {
         try {
             const connection = await this.#connect();
-            await connection.query("UPDATE commands set avaible = ? WHERE commandId = ?",[value,commandId]);
+            await connection.query("UPDATE commands set avaible = ? WHERE commandId = ?", [value, commandId]);
             connection.release();
             return;
         } catch (error) {
@@ -46,12 +46,23 @@ export class CommandsRepository {
         }
     }
 
-    async getAvaibleCommand(){
+    async getAvaibleCommand() {
         try {
             const connection = await this.#connect();
-            const [command] = await connection.query("SELECT * from commands WHERE avaible = true");
+            const [command] = await connection.query("SELECT * from commands WHERE avaible = true and valid = true");
             connection.release();
             return command
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async inactiveCommand(commandId) {
+        try {
+            const connection = await this.#connect();
+            await connection.query(`UPDATE commands SET valid = false WHERE commandId = ?`,[commandId]);
+            connection.release();
+            return;
         } catch (error) {
             throw new Error(error.message)
         }

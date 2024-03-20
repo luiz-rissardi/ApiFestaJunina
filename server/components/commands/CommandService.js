@@ -48,7 +48,14 @@ export class CommandService extends ValidateFieldsTemplateMethod {
         try {
             if (this.validate("commandUrl", commandUrl)) {
                 const command = await this.#repository.findByCommandUrl(commandUrl);
-                return command
+                if(command.length != 0){
+                    return command
+                }else{
+                    return {
+                        message:"comanda indisponivel",
+                        type:"invalid"
+                    }
+                }
             } else {
                 loggers.info(this.mesageErrors)
             }
@@ -77,6 +84,26 @@ export class CommandService extends ValidateFieldsTemplateMethod {
         } catch (error) {
             loggers.error(`CommandService => updateCommand => erro ao atualizar comanda ${error.message}`)
             throw new Error("Não foi possível atualizar a comanda")
+        }
+    }
+
+    async inactiveCommand(commandId) {
+        try {
+            if (this.validate("commandId", commandId)) {
+                await this.#repository.inactiveCommand(commandId);
+                return {
+                    message: "comanda inativada com sucesso!",
+                    type: "valid"
+                }
+            } else {
+                return {
+                    message: "não foi possivel inativar a comanda",
+                    type: "invalid"
+                }
+            }
+        } catch (error) {
+            loggers.error(`CommandService => inactiveCommand => erro ao inativar comanda ${error.message}`)
+            throw new Error("Não foi possível inativar a comanda")
         }
     }
 }

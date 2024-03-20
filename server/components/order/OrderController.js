@@ -50,6 +50,18 @@ export class OrderController {
             response.end();
         }
     }
+
+    async putCommandInOrder(request,response){
+        try {
+            const { orderId, commandId } = request.body;
+            const result = await this.#service.putCommandIdIntoOrder(orderId,commandId);
+            response.json(result)
+        } catch (error) {
+            response.writeHead(500);
+        }finally{
+            response.end();
+        }
+    }
 }
 
 

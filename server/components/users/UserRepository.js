@@ -16,7 +16,7 @@ export class UserRepository {
     async findOne(userName, passwordHash) {
         try {
             const connection = await this.#connect();
-            const [user] = await connection.query("select * from users where users.userName = ? && users.passwordHash = ? ", [userName, passwordHash])
+            const [[user]] = await connection.query("select * from users where users.userName = ? && users.passwordHash = ? ", [userName, passwordHash])
             connection.release();
             return user;
         } catch (error) {

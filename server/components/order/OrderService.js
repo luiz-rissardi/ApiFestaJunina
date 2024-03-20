@@ -34,18 +34,18 @@ export class OrderService extends ValidateFieldsTemplateMethod {
         }
     }
 
-    async createOrder(orderId,commandId) {
+    async createOrder(orderId, commandId) {
         try {
             const dateOfCreate = DateFormat(new Date());
             const orderExists = (await this.#repository.getOne(orderId)).length
             if (orderExists == 0) {
-                await this.#repository.insertOne(dateOfCreate, orderId,commandId);
+                await this.#repository.insertOne(dateOfCreate, orderId, commandId);
                 return {
                     message: "venda criada com sucesso!",
                     type: "valid",
                     orderId
                 }
-            }else{
+            } else {
                 return {
                     message: "venda criada com sucesso!",
                     type: "valid",
@@ -64,6 +64,29 @@ export class OrderService extends ValidateFieldsTemplateMethod {
             return;
         } catch (error) {
             loggers.error(`OrderController => updateOrder => erro ao atualizar a venda ${error.message}`);
+            throw new Error("não foi possivel atualizar a venda!")
+        }
+    }
+
+    async putCommandIdIntoOrder(orderId, newCommandId) {
+        try {
+            const oldCommandId = (await this.#repository.getOne(orderId))[0].commandId;
+            
+            if(oldCommandId){
+                await this.#repository.putOne(orderId,newCommandId);
+                return {
+                    type:"valid",
+                    message:"comanda atualizada com sucesso",
+                    oldCommandId
+                }
+            }else{
+                return {
+                    type:"invalid",
+                    message:"não foi possivel atualizar comanda"
+                }
+            }
+        } catch (error) {
+            loggers.error(`OrderController => putCommandIdIntoOrder => erro ao atualizar a venda ${error.message}`);
             throw new Error("não foi possivel atualizar a venda!")
         }
     }
