@@ -3,18 +3,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "back-end": "nodemon ./server/index.js",
-    "carga": "npx autocannon -c 1000 -d 30 http://localhost:8723/api/product",
+    "back-end": "nodemon --env-file .env ./server/index.js",
+    "carga": "npx autocannon -c 1000 -d 30 http://localhost:8723/api/command",
     "carga-p": "npx autocannon -c 1000 -d 30 -m POST -b \"{\\\"productName\\\": \\\"carne\\\", \\\"price\\\": 12.9, \\\"quantity\\\": 300}\" -H \"Content-Type: application/json\" http://localhost:8723/api/product",
-    "c":"npx climem 8999",
-    "s-c":"set CLIMEM=8999 && node -r climem ./server/index.js"
+    "c": "npx climem 8999",
+    "s-c": "set CLIMEM=8999 && node -r climem  --env-file .env ./server/index.js"
   },
   "private": true,
   "dependencies": {
     "autocannon": "^7.11.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
+    "env-var": "^7.4.1",
     "express": "^4.18.2",
+    "express-rate-limit": "^7.2.0",
     "mysql2": "^3.5.2",
     "node-telegram-bot-api": "^0.65.1",
     "nodemon": "^3.0.1",

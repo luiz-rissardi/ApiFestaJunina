@@ -2,11 +2,10 @@
 import express from 'express';
 import http from "http";
 import { promisify } from 'util';
-import { config } from 'dotenv'; 
 import cors from "cors"
+import configEnv from './helpers/config.js';
 
-
-import { loggers,bodyParse,AcceptDefaultDomain } from "./helpers/helper.js"
+import { loggers,bodyParse,RateLimit } from "./helpers/helper.js"
 import { MySqlDatabase } from './data/MySqlDataBase.js';
 import { RoutesOfApi } from './routes/routes.js';
 import { OrderFactory } from './components/order/OrderFactory.js';
@@ -16,23 +15,20 @@ import { UserFactory } from './components/users/UserFactory.js';
 import { ClientFactory } from './components/clients/clientFactory.js';
 import { CommandFactory } from './components/commands/CommandsFactory.js';
 
-
-config()
-
 export class Server{
     static createServer(){
         const app = express();
         const server = http.createServer(app);
         const routes = Server.#instanceDependeces();
-        const database = MySqlDatabase.build(process.env.CONNECTION_STRING);
+        const database = MySqlDatabase.build(configEnv.CONNECTION_STRING);
 
         app.use(cors({
             origin: 'http://localhost:4200'
         }))
         
-        app.use("/api",bodyParse,routes)
-        server.listen(process.env.PORT,async ()=>{
-            loggers.info(`Server is running at port ${process.env.PORT}`);
+        app.use("/api",RateLimit,bodyParse,routes)
+        server.listen(configEnv.PORT,async ()=>{
+            loggers.info(`Server is running at port ${configEnv.PORT}`);
             const events = ["SIGINT","SIGTERM"];
             events.forEach(event =>{
                 process.on(event,()=>{

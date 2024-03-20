@@ -1,4 +1,5 @@
 import { createLogger, format, transports } from 'winston';
+import rateLimit from 'express-rate-limit';
 
 const typeOfLogs = createLogger({
     level: 'debug', // Defina o nível de log desejado (pode ser 'debug', 'info', 'warn', 'error', etc.)
@@ -26,7 +27,7 @@ const loggers = {
 }
 
 
-async function bodyParse(request, response, next) {
+function bodyParse(request, response, next) {
 
     if (request.method === "GET") {
         next()
@@ -43,18 +44,25 @@ async function bodyParse(request, response, next) {
             next()
         }
 
-        await request.on("data", getBody);
-        await request.on("end", appendToBodyRequest);
+        request.on("data", getBody);
+        request.on("end", appendToBodyRequest);
     }
 }
 
-function AcceptDefaultDomain(req, res, next) {
+function acceptDefaultDomain(req, res, next) {
     next();
 }
+
+const RateLimit = rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minutes
+    limit: 150, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+    standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+})
 
 export {
     loggers,
     bodyParse,
     DateFormat,
-    AcceptDefaultDomain
+    RateLimit
 };
