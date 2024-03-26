@@ -38,7 +38,7 @@ export class CommandsRepository {
     async putCommand(commandId, value) {
         try {
             const connection = await this.#connect();
-            await connection.query("UPDATE commands set avaible = ? WHERE commandId = ?", [value, commandId]);
+            await connection.query("UPDATE commands set avaible = ?,valid = true WHERE commandId = ?", [value, commandId]);
             connection.release();
             return;
         } catch (error) {

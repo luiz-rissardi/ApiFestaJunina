@@ -54,6 +54,19 @@ export class ProductService extends ValidateFieldsTemplateMethod {
         }
     }
 
+    async addProduct(productId,quantity){
+        try {
+            await this.#repository.addProduct(productId,quantity);
+            return {
+                message:"reembolso realizado com sucesso!",
+                type:"valid"
+            }
+        } catch (error) {
+            loggers.error(`product => addQuantityProduct => erro ao somar quantiedade ao estoque => ${error.message}`)
+            throw new Error("não foi possivel sommar quantiedade ao estoque")
+        }
+    } 
+
     async createProduct(product) {
         try {
             product.price = Number(product.price)

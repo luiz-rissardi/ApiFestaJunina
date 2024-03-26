@@ -69,7 +69,7 @@ const ordersProductsEntity = {
         type:"number",
         minLength:1
     },
-    totalQuantity:{
+    totalPrice:{
         type:"number",
         minLength:1
     },

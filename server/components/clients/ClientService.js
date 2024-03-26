@@ -31,7 +31,15 @@ export class ClientService extends ValidateFieldsTemplateMethod {
     async getClient(phone) {
         try {
             if (this.validate("phone", phone)) {
-                return await this.#repository.findOne(phone);
+                const client = await this.#repository.findOne(phone);
+                if(client != undefined){
+                    return client;
+                }else{
+                    return {
+                        message:"numero de telefone não encontrado",
+                        type:"invalid"
+                    }
+                }
             } else {
                 loggers.warn(`ClientService => getClient => falhou ao buscar cliente ${this.mesageErrors}`);
                 return {

@@ -87,18 +87,29 @@ export class RoutesOfApi {
     #routesOfOrderProductsController() {
         const routes = Router();
 
+        //buscar um produto da venda
         routes.route("/order/product/:orderId&:productId")
             .get((req, res) => {
-                this.#ordersProductController.getOrdersProduct(req, res)
+                this.#ordersProductController.getProductOfOrder(req, res)
             })
 
-        routes.route("/order/product")
+        //buscar todos os produtos da venda
+        routes.route("/order/products/:orderId")
+            .get((req, res) => {
+                this.#ordersProductController.getAllProductOfOrder(req, res)
+            })
+
+        routes.route("/order/products")
             .post((req, res) => {
                 this.#ordersProductController.insertProductsIntoOrder(req, res)
             })
             .put((req, res) => {
                 this.#ordersProductController.recordOrders(req, res)
             })
+            .patch((req, res) => {
+                this.#ordersProductController.refoundOrderProduts(req,res)
+            })
+
 
         // busca os top $ produtos das vendas
         routes.route("/order/product/top")
@@ -120,13 +131,16 @@ export class RoutesOfApi {
 
         routes.route("/product")
             .get((req, res) => {
-                this.#productController.getAllProductsInProduct(req, res)
+                this.#productController.getAllProducts(req, res)
             })
             .post((req, res) => {
                 this.#productController.createProduct(req, res)
             })
             .put((req, res) => {
                 this.#productController.updateProduct(req, res)
+            })
+            .patch((req, res) => {
+                this.#productController.addQuantityProduct(req, res);
             })
 
         routes.route("/product/substraction").post((req, res) => {

@@ -46,6 +46,16 @@ export class ProductRepository {
         }
     }
 
+    async addProduct(productId, quantity) {
+        try {
+            const connection = await this.#connect();
+            connection.query("UPDATE products SET quantity = quantity + ? WHERE productId = ?", [Number(quantity), productId])
+            connection.release();
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
     async substractionProduct(updates) {
         try {
             const connection = await this.#connect();
@@ -56,8 +66,7 @@ export class ProductRepository {
             await connection.commit();
             connection.release();
         } catch (error) {
-            console.log(error);
-            //throw new Error(error.message)
+            throw new Error(error.message)
         }
     }
 

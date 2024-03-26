@@ -54,6 +54,23 @@ export class OrderProdutsRepository {
         }
     }
 
+    async findAll(orderId) {
+        try {
+            const connection = await this.#connect();
+            const [products] = await connection.query(`
+            SELECT OP.orderId, P.productId,P.productName, OP.totalPrice, OP.quantity, P.price as OriginalPrice 
+            from order_products as OP
+            inner join products as P on P.productId = OP.productId
+            WHERE orderId = ?`,
+                [orderId]);
+            connection.release();
+            return products;
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+
     async findOneProductOfOrder(orderId, productId) {
         try {
             const connection = await this.#connect();
@@ -72,7 +89,7 @@ export class OrderProdutsRepository {
         try {
             const connection = await this.#connect();
             await connection.query(`INSERT INTO order_products  VALUES (?,?,?,?)`
-                ,[order.orderId, order.productId, order.totalPrice, order.quantity]
+                , [order.orderId, order.productId, order.totalPrice, order.quantity]
             );
             connection.release();
             return;

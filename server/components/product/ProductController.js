@@ -5,7 +5,7 @@ export class ProductController {
         this.#service = service;
     }
 
-    async getAllProductsInProduct(request, response) {
+    async getAllProducts(request, response) {
         try {
             const data = await this.#service.findAllProductsInProduct();
             response.json(data)
@@ -22,6 +22,18 @@ export class ProductController {
             const product = request.body;
             const result = await this.#service.createProduct(product);
             response.json(result)
+        } catch (error) {
+            response.writeHead(500);
+        } finally {
+            response.end();
+        }
+    }
+
+    async addQuantityProduct(request, response) {
+        try {
+            const { productId, quantity } = request.body;
+            const result = await this.#service.addProduct(productId,quantity);
+            response.status(200).json(result);
         } catch (error) {
             response.writeHead(500);
         } finally {

@@ -97,7 +97,7 @@ export class CommandService extends ValidateFieldsTemplateMethod {
                 }
             } else {
                 return {
-                    message: "não foi possivel inativar a comanda",
+                    message: "numero de telefone não encontrado",
                     type: "invalid"
                 }
             }

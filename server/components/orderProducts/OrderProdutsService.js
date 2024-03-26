@@ -40,6 +40,7 @@ export class OrderProdutsService extends ValidateFieldsTemplateMethod {
                 this.validate("orderId", orderId) &
                 this.validate("quantity", quantity)
             ) {
+                console.log(quantity);
                 await this.#repository.updateQuantityOne(productId, orderId, quantity);
                 return {
                     message: "baixa realizada com sucesso",
@@ -58,6 +59,49 @@ export class OrderProdutsService extends ValidateFieldsTemplateMethod {
         }
     }
 
+    async findAllProdutsOfOrder(orderId) {
+        try {
+            if (this.validate("orderId", orderId)) {
+                return await this.#repository.findAll(orderId);
+            } else {
+                loggers.error(`orders => findAllProdutsOfOrder => erro ao buscar produtos da venda ${this.mesageErrors}`)
+                return {
+                    message: "erro ao buscar produtos",
+                    type: "invalid"
+                }
+            }
+        } catch (error) {
+            loggers.error(`orders => findAllProdutsOfOrder => erro ao buscar produtos das venda ${error.message}`)
+            throw new Error("não foi possivel buscar produtos da venda")
+        }
+    }
+
+    async refoundOrderProducts(descontQuantity, descontPrice, orderId, productId) {
+        try {
+            if (
+                this.validate("orderId", orderId) &&
+                this.validate("productId", productId) &&
+                this.validate("totalPrice", descontPrice) &&
+                this.validate("quantity", descontQuantity)
+                ) {
+                await this.#repository.updateProductOne(orderId,productId,descontQuantity,descontPrice );
+                return {
+                    message: "reembolso realizado com sucesso",
+                    type: "valid"
+                }
+            } else {
+                loggers.error(`orders => refoundOrderProducts => erro ao reembolsar produtos da venda ${this.mesageErrors}`)
+                return {
+                    message: "erro ao reembolsar produtos",
+                    type: "invalid"
+                }
+            }
+        } catch (error) {
+            loggers.error(`orders => refoundOrderProducts => erro ao reembolsar produtos da venda ${error.message}`)
+            throw new Error("não foi possivel reembolsar produtos da venda")
+        }
+    }
+
     async findOrderProduts(orderId, productId) {
         try {
             productId = Number(productId);
@@ -67,14 +111,14 @@ export class OrderProdutsService extends ValidateFieldsTemplateMethod {
             ) {
                 return await this.#repository.findMany(orderId, productId);
             } else {
-                loggers.error(`orders => findOrderProduts => erro ao buscar produtos das vendas ${this.mesageErrors}`)
+                loggers.error(`orders => findOrderProduts => erro ao buscar produto da venda ${this.mesageErrors}`)
                 return {
                     message: "erro ao buscar produtos",
                     type: "invalid"
                 }
             }
         } catch (error) {
-            loggers.error(`orders => findOrderProduts => erro ao buscar produtos das vendas ${error.message}`)
+            loggers.error(`orders => findOrderProduts => erro ao buscar produto da venda ${error.message}`)
             throw new Error("não foi possivel buscar produtos da venda")
         }
     }
