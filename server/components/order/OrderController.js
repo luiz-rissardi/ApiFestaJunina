@@ -62,6 +62,18 @@ export class OrderController {
             response.end();
         }
     }
+
+    async getOrderByCommandId(request,response){
+        try {
+            const { commandId } = request.params;
+            const result = await this.#service.findCommandByCommandId(commandId);
+            response.status(200).json(result);
+        } catch (error) {
+            response.writeHead(500);
+        }finally{
+            response.end();
+        }
+    }
 }
 
 

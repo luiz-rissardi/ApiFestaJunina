@@ -35,11 +35,15 @@ export class ValidateFieldsTemplateMethod {
         let isValid;
         if (this.#typeOfSchema[fieldTarget].type === "Date") {
             isValid = this.#_validateDate(value)
-        } else {
+        }
+        else if (this.#typeOfSchema[fieldTarget].type === "number") {
+            isValid = !Number.isNaN(value)
+        }
+        else {
             isValid = this.#typeOfSchema[fieldTarget].type == typeof value;
         }
         if (!isValid) {
-            this.mesageErrors.push(`\n o tipo do valor esperado prar '${fieldTarget}' era '${this.#typeOfSchema[fieldTarget].type}' porem recebeu o tipo '${typeof value}' `)
+            this.mesageErrors.push(`\n o tipo do valor esperado prar '${fieldTarget}' era '${this.#typeOfSchema[fieldTarget].type}' porem recebeu o tipo '${Number.isNaN(value)? NaN : typeof value}' `)
         }
         return isValid
     }

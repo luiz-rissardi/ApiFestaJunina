@@ -90,4 +90,23 @@ export class OrderService extends ValidateFieldsTemplateMethod {
             throw new Error("não foi possivel atualizar a venda!")
         }
     }
+
+    async findCommandByCommandId(commandId){
+        try {
+            commandId = Number(commandId);
+            if(this.validate("commandId",commandId)){
+                const order = await this.#repository.getOneByCommandId(commandId);
+                return order;
+            }else{
+                loggers.warn(this.mesageErrors)
+                return {
+                    message:"comanda invalida",
+                    type:"invalid"
+                }
+            }
+        } catch (error) {
+            loggers.error(`OrderController => getCommandByCommandId => erro ao pegar a venda ${error.message}`);
+            throw new Error("não foi possivel pegar a venda!")
+        }
+    }
 }

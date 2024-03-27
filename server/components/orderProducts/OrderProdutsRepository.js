@@ -43,10 +43,11 @@ export class OrderProdutsRepository {
     async findMany(orderId, productId) {
         try {
             const connection = await this.#connect();
-            const [[orders]] = await connection.query(`SELECT orderId, productId, SUM(quantity) AS quantity, SUM(totalPrice) AS totalPrice
-            FROM order_products
-            WHERE orderId = ? AND productId = ?
-            GROUP BY orderId, productId`, [orderId, productId]);
+            const [[orders]] = await connection.query(`SELECT OP.orderId, OP.productId, P.productName, SUM(OP.quantity) AS quantity, SUM(OP.totalPrice) AS totalPrice
+            FROM order_products as OP
+            INNER JOIN products as P on P.productId = OP.productId
+            WHERE OP.orderId = ? AND OP.productId = ?
+            GROUP BY OP.orderId, P.productId`, [orderId, productId]);
             connection.release();
             return orders;
         } catch (error) {

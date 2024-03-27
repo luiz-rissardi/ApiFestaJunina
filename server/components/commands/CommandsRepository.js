@@ -27,7 +27,7 @@ export class CommandsRepository {
     async findByCommandUrl(commandUrl) {
         try {
             const connection = await this.#connect();
-            const [command] = await connection.query("SELECT * FROM commands WHERE commandUrl = ? and valid = true", [commandUrl]);
+            const [[command]] = await connection.query("SELECT * FROM commands WHERE commandUrl = ? and valid = true", [commandUrl]);
             connection.release();
             return command
         } catch (error) {
@@ -60,7 +60,7 @@ export class CommandsRepository {
     async inactiveCommand(commandId) {
         try {
             const connection = await this.#connect();
-            await connection.query(`UPDATE commands SET valid = false WHERE commandId = ?`,[commandId]);
+            await connection.query(`UPDATE commands SET valid = false WHERE commandId = ?`, [commandId]);
             connection.release();
             return;
         } catch (error) {

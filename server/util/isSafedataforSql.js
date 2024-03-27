@@ -1,5 +1,5 @@
 
-const FORBIDDEN_KEYS = ["SELECT", "INSERT", "CREATE", "DROP", "DELETE", "UPDATE"]
+const FORBIDDEN_KEYS = ["SELECT", "INSERT", "CREATE", "DROP", "DELETE", "UPDATE","FROM"]
 
 export function isSafeDataforSql(...params) {
     const isSafeSqlParams = params

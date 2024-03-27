@@ -56,6 +56,10 @@ const orderEntity = {
     orderId:{
         type:"string",
         minLength:20
+    },
+    commandId:{
+        type:"number",
+        minLength:1
     }
 }
 

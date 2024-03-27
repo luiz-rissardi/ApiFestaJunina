@@ -40,7 +40,6 @@ export class OrderProdutsService extends ValidateFieldsTemplateMethod {
                 this.validate("orderId", orderId) &
                 this.validate("quantity", quantity)
             ) {
-                console.log(quantity);
                 await this.#repository.updateQuantityOne(productId, orderId, quantity);
                 return {
                     message: "baixa realizada com sucesso",

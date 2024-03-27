@@ -62,13 +62,20 @@ export class RoutesOfApi {
     #routesOfOrderController() {
         const routes = Router()
 
-        routes.route("/order/:dateInitial/:dateEnded").get((req, res) => {
-            this.#orderController.getBetweenDate(req, res)
-        })
+        routes.route("/order/:dateInitial/:dateEnded")
+            .get((req, res) => {
+                this.#orderController.getBetweenDate(req, res)
+            })
 
-        routes.route("/order/count").get((req, res) => {
-            this.#orderController.getCountTotalOrders(req, res)
-        })
+        routes.route("/order/count")
+            .get((req, res) => {
+                this.#orderController.getCountTotalOrders(req, res)
+            })
+
+        routes.route("/order/:commandId")
+            .get((req, res) => {
+                this.#orderController.getOrderByCommandId(req, res)
+            })
 
         routes.route("/order")
             .post((req, res) => {
@@ -107,7 +114,7 @@ export class RoutesOfApi {
                 this.#ordersProductController.recordOrders(req, res)
             })
             .patch((req, res) => {
-                this.#ordersProductController.refoundOrderProduts(req,res)
+                this.#ordersProductController.refoundOrderProduts(req, res)
             })
 
 

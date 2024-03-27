@@ -35,6 +35,20 @@ export class OrderRepository {
         }
     }
 
+    async getOneByCommandId(commandId) {
+        try {
+            const connection = await this.#connect();
+            const [[order]] = await connection.query(`SELECT * 
+            FROM orders 
+            WHERE commandId = ? and avaible = true
+            `, [commandId]);
+            connection.release();
+            return order;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
     async insertOne(dateOfCreate, orderId, commandId) {
         try {
             const connection = await this.#connect();

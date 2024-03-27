@@ -48,7 +48,7 @@ export class CommandService extends ValidateFieldsTemplateMethod {
         try {
             if (this.validate("commandUrl", commandUrl)) {
                 const command = await this.#repository.findByCommandUrl(commandUrl);
-                if(command.length != 0){
+                if(command){
                     return command
                 }else{
                     return {
