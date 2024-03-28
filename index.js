@@ -6,7 +6,7 @@ import { promisify } from 'util';
 import dotenv from "dotenv"
 
 import { loggers,bodyParse,RateLimit } from "./server/helpers/helper.js"
-import { MySqlDatabase } from './server/data/MySqlDataBase.js';
+// import { MySqlDatabase } from './server/data/MySqlDataBase.js';
 import { RoutesOfApi } from './server/routes/routes.js';
 import { OrderFactory } from './server/components/order/OrderFactory.js';
 import { OrderProdutsFactory } from './server/components/orderProducts/OrderProdutsFactory.js';
@@ -15,9 +15,10 @@ import { UserFactory } from './server/components/users/UserFactory.js';
 import { ClientFactory } from './server/components/clients/clientFactory.js';
 import { CommandFactory } from './server/components/commands/CommandsFactory.js';
 
+dotenv.config();
+
 export class Server{
     static createServer(){
-        dotenv.config();
         const app = express();
         const server = http.createServer(app);
         // const routes = Server.#instanceDependeces();
@@ -26,8 +27,13 @@ export class Server{
         // app.use(cors({
         //     origin: 'http://localhost:4200'
         // }))
+
+        app.get("/api",(req,res)=>{
+            res.write("ola")
+            res.end();
+        })
         
-        app.use("/api",RateLimit,bodyParse)
+        // app.use("/api",RateLimit,bodyParse)
         server.listen(process.env.PORT || 3000,async ()=>{
             loggers.info(`Server is running at port ${process.env.PORT}`);
             // const events = ["SIGINT","SIGTERM"];
