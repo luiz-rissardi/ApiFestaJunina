@@ -2,8 +2,8 @@
 import express from 'express';
 import http from "http";
 import { promisify } from 'util';
-import cors from "cors"
-import configEnv from './server/helpers/config.js';
+// import cors from "cors"
+import dotenv from "dotenv"
 
 import { loggers,bodyParse,RateLimit } from "./server/helpers/helper.js"
 import { MySqlDatabase } from './server/data/MySqlDataBase.js';
@@ -17,18 +17,19 @@ import { CommandFactory } from './server/components/commands/CommandsFactory.js'
 
 export class Server{
     static createServer(){
+        dotenv.config();
         const app = express();
         const server = http.createServer(app);
         const routes = Server.#instanceDependeces();
-        const database = MySqlDatabase.build(configEnv.CONNECTION_STRING);
+        const database = MySqlDatabase.build(process.env.CONNECTION_STRING);
 
-        app.use(cors({
-            origin: 'http://localhost:4200'
-        }))
+        // app.use(cors({
+        //     origin: 'http://localhost:4200'
+        // }))
         
         app.use("/api",RateLimit,bodyParse,routes)
-        server.listen(configEnv.PORT,async ()=>{
-            loggers.info(`Server is running at port ${configEnv.PORT}`);
+        server.listen(process.env.PORT || 3000,async ()=>{
+            loggers.info(`Server is running at port ${process.env.PORT}`);
             const events = ["SIGINT","SIGTERM"];
             events.forEach(event =>{
                 process.on(event,()=>{
