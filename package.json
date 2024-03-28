@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "node --env-file .env index.js",
+    "start": "node index.js",
     "back-end": "nodemon --env-file .env ./server/index.js",
     "carga": "npx autocannon -c 1000 -d 30 http://localhost:8723/api/command",
     "carga-p": "npx autocannon -c 1000 -d 30 -m POST -b \"{\\\"productName\\\": \\\"carne\\\", \\\"price\\\": 12.9, \\\"quantity\\\": 300}\" -H \"Content-Type: application/json\" http://localhost:8723/api/product",
