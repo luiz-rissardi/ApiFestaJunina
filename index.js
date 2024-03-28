@@ -20,22 +20,22 @@ export class Server{
         dotenv.config();
         const app = express();
         const server = http.createServer(app);
-        const routes = Server.#instanceDependeces();
-        const database = MySqlDatabase.build(process.env.CONNECTION_STRING);
+        // const routes = Server.#instanceDependeces();
+        // const database = MySqlDatabase.build(process.env.CONNECTION_STRING);
 
         // app.use(cors({
         //     origin: 'http://localhost:4200'
         // }))
         
-        app.use("/api",RateLimit,bodyParse,routes)
+        app.use("/api",RateLimit,bodyParse)
         server.listen(process.env.PORT || 3000,async ()=>{
             loggers.info(`Server is running at port ${process.env.PORT}`);
-            const events = ["SIGINT","SIGTERM"];
-            events.forEach(event =>{
-                process.on(event,()=>{
-                    Server.#destroyServer(database,server)
-                })
-            })
+            // const events = ["SIGINT","SIGTERM"];
+            // events.forEach(event =>{
+            //     process.on(event,()=>{
+            //         Server.#destroyServer(database,server)
+            //     })
+            // })
         })
     }
 
