@@ -1,5 +1,5 @@
 
-import express, {Router} from 'express';
+import express, { Router } from 'express';
 import http from "http";
 import { promisify } from 'util';
 // import cors from "cors"
@@ -81,5 +81,41 @@ export class Server {
     }
 }
 
-Server.createServer();
+// Server.createServer();
+
+
+const app = express();
+const server = http.createServer(app);
+// const routes = Server.#instanceDependeces();
+// const database = MySqlDatabase.build(process.env.CONNECTION_STRING);
+
+// app.use(cors({
+//     origin: 'http://localhost:4200'
+// }))
+
+// app.use("/api",RateLimit,bodyParse,routes)
+server.listen(3000, () => {
+    console.log(`Server is running at port 3000`);
+    // const events = ["SIGINT","SIGTERM"];
+    // events.forEach(event =>{
+    //     process.on(event,()=>{
+    //         Server.#destroyServer(database,server)
+    //     })
+    // })
+})
+
+const routes = Router();
+
+routes.route("/product").get((req, res) => {
+    res.status(200).json({
+        productName: "pipoca",
+        productId: 3,
+        price: 8.78,
+        quantity: 89
+    })
+})
+
+app.use("/api", routes)
+
+
 
