@@ -1,11 +1,14 @@
 
 import express,{Router} from 'express';
 import http from "http";
+import dotenv from "dotenv"
+
+dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
 
-server.listen(3000,()=>{
+server.listen(process.env.PORT || 3000,()=>{
     console.log("servidor conectado!");
 })
 
