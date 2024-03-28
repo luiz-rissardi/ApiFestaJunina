@@ -2,11 +2,13 @@
 import express from 'express';
 import http from "http";
 import { promisify } from 'util';
-// import cors from "cors"
+import cors from "cors"
 import dotenv from "dotenv"
 
+dotenv.config()
+
 import { loggers,bodyParse,RateLimit } from "./server/helpers/helper.js"
-// import { MySqlDatabase } from './server/data/MySqlDataBase.js';
+import { MySqlDatabase } from './server/data/MySqlDataBase.js';
 import { RoutesOfApi } from './server/routes/routes.js';
 import { OrderFactory } from './server/components/order/OrderFactory.js';
 import { OrderProdutsFactory } from './server/components/orderProducts/OrderProdutsFactory.js';
@@ -15,27 +17,20 @@ import { UserFactory } from './server/components/users/UserFactory.js';
 import { ClientFactory } from './server/components/clients/clientFactory.js';
 import { CommandFactory } from './server/components/commands/CommandsFactory.js';
 
-dotenv.config();
-
 export class Server{
     static createServer(){
         const app = express();
         const server = http.createServer(app);
-        // const routes = Server.#instanceDependeces();
-        // const database = MySqlDatabase.build(process.env.CONNECTION_STRING);
+        const routes = Server.#instanceDependeces();
+        const database = MySqlDatabase.build(process.env.CONNECTION_STRING);
 
-        // app.use(cors({
-        //     origin: 'http://localhost:4200'
-        // }))
-
-        app.get("/api",(req,res)=>{
-            res.write("ola")
-            res.end();
-        })
+        app.use(cors({
+            origin: 'http://localhost:4200'
+        }))
         
-        // app.use("/api",RateLimit,bodyParse)
-        server.listen(process.env.PORT || 3000, ()=>{
-            // loggers.info(`Server is running at port ${process.env.PORT}`);
+        app.use("/api",RateLimit,bodyParse,routes)
+        server.listen(3000,async ()=>{
+            loggers.info(`Server is running at port 3000`);
             const events = ["SIGINT","SIGTERM"];
             events.forEach(event =>{
                 process.on(event,()=>{

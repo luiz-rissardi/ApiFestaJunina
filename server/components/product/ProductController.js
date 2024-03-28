@@ -8,6 +8,7 @@ export class ProductController {
     async getAllProducts(request, response) {
         try {
             const data = await this.#service.findAllProductsInProduct();
+            console.log(data);
             response.json(data)
         } catch (error) {
             console.log(error);

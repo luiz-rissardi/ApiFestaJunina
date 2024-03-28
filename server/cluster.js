@@ -9,7 +9,7 @@ async function primaryWorker(){
 }
 
 async function processWorker(){
-    await import("./index.js");
+    await import("../index.js");
 }
 
 

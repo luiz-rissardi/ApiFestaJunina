@@ -8,6 +8,7 @@ export class UserFactory{
         try {
             const connection = MySqlDatabase.build(process.env.CONNECTION_STRING);
             const repository = new UserRepository({ connection });
+            // repository.createUserAdmin()
             const service = new UserService({ repository });
             return new UserController({ service });
         } catch (error) {
