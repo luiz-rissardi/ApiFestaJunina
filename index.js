@@ -3,17 +3,17 @@ import express from 'express';
 import http from "http";
 import { promisify } from 'util';
 import cors from "cors"
-import configEnv from './helpers/config.js';
+import configEnv from './server/helpers/config.js';
 
-import { loggers,bodyParse,RateLimit } from "./helpers/helper.js"
-import { MySqlDatabase } from './data/MySqlDataBase.js';
-import { RoutesOfApi } from './routes/routes.js';
-import { OrderFactory } from './components/order/OrderFactory.js';
-import { OrderProdutsFactory } from './components/orderProducts/OrderProdutsFactory.js';
-import { ProductFactory } from './components/product/ProductFactory.js';
-import { UserFactory } from './components/users/UserFactory.js';
-import { ClientFactory } from './components/clients/clientFactory.js';
-import { CommandFactory } from './components/commands/CommandsFactory.js';
+import { loggers,bodyParse,RateLimit } from "./server/helpers/helper.js"
+import { MySqlDatabase } from './server/data/MySqlDataBase.js';
+import { RoutesOfApi } from './server/routes/routes.js';
+import { OrderFactory } from './server/components/order/OrderFactory.js';
+import { OrderProdutsFactory } from './server/components/orderProducts/OrderProdutsFactory.js';
+import { ProductFactory } from './server/components/product/ProductFactory.js';
+import { UserFactory } from './server/components/users/UserFactory.js';
+import { ClientFactory } from './server/components/clients/clientFactory.js';
+import { CommandFactory } from './server/components/commands/CommandsFactory.js';
 
 export class Server{
     static createServer(){
