@@ -42,7 +42,20 @@ export class UserRepository {
                 "INSERT INTO users (userName,passwordHash,productIdAnexed,typeAccount) VALUES (?,?,?,?)",
                 [account.userName, account.passwordHash, account.productIdAnexed, account.typeAccount]);
             connection.release();
-            return false
+            return ;
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async createUserAdmin() {
+        try {
+            const connection = await this.#connect();
+            await connection.query(
+                "INSERT INTO users (userName,passwordHash,typeAccount) VALUES (?,?,?)",
+                ["ifpr", "9936f007a706190a4ef6316a221b1db853388e4d4d2389c1c006682a59eff7e303e987267535361c3806baf742d67693f320b22701720f1484b3ce43a76c59c8", 1]);
+            connection.release();
+            return ;
         } catch (error) {
             throw new Error(error.message)
         }
