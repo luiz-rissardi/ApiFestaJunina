@@ -1,10 +1,12 @@
-import env from "env-var"
+import dotenv from "dotenv"
+
+dotenv.config();
 
 const configEnv = {
-    HASHED_SALT: env.get("HASHED_SALT").required().asString(),
-    HASHED_SALT_CODE_USER: env.get("HASHED_SALT_CODE_USER").required().asString(),
-    PORT: env.get("PORT").required().asInt(),
-    CONNECTION_STRING: env.get("CONNECTION_STRING").required().asUrlString()
+    HASHED_SALT: process.env.HASHED_SALT,
+    HASHED_SALT_CODE_USER: process.env.HASHED_SALT_CODE_USER,
+    PORT: process.env.PORT,
+    CONNECTION_STRING: process.env.CONNECTION_STRING
 };
 
 export default configEnv
