@@ -34,14 +34,14 @@ export class Server{
         })
         
         // app.use("/api",RateLimit,bodyParse)
-        server.listen(process.env.PORT || 3000,async ()=>{
-            loggers.info(`Server is running at port ${process.env.PORT}`);
-            // const events = ["SIGINT","SIGTERM"];
-            // events.forEach(event =>{
-            //     process.on(event,()=>{
-            //         Server.#destroyServer(database,server)
-            //     })
-            // })
+        server.listen(process.env.PORT || 3000, ()=>{
+            // loggers.info(`Server is running at port ${process.env.PORT}`);
+            const events = ["SIGINT","SIGTERM"];
+            events.forEach(event =>{
+                process.on(event,()=>{
+                    Server.#destroyServer(database,server)
+                })
+            })
         })
     }
 
