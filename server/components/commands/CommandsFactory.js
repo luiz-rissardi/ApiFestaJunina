@@ -1,5 +1,5 @@
 import { MySqlDatabase } from "../../data/MySqlDataBase.js";
-import { CommandsRepository } from "./commandsRepository.js";
+import { CommandsRepository } from "./CommandsRepository.js";
 import { CommandController } from "./CommandController.js";
 import { CommandService } from "./CommandService.js";
 
