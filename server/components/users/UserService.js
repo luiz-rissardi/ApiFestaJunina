@@ -17,7 +17,10 @@ export class UserService extends ValidateFieldsTemplateMethod {
                 const result = await this.#repository.findOne(userName, passwordHash);
                 const userIsAuthenticated = result != undefined;
                 const user =  userIsAuthenticated != undefined ? result : null;
-                Reflect.deleteProperty(user,"passwordHash");
+
+                if(user != null){
+                    Reflect.deleteProperty(user,"passwordHash");
+                }
                 return {
                     authenticated: userIsAuthenticated,
                     user
