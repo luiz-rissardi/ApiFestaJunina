@@ -14,7 +14,7 @@ import { OrderFactory } from './server/components/order/OrderFactory.js';
 import { OrderProdutsFactory } from './server/components/orderProducts/OrderProdutsFactory.js';
 import { ProductFactory } from './server/components/product/ProductFactory.js';
 import { UserFactory } from './server/components/users/UserFactory.js';
-import { ClientFactory } from './server/components/clients/clientFactory.js';
+import { ClientFactory } from './server/components/clients/ClientFactory.js';
 import { CommandFactory } from './server/components/commands/CommandsFactory.js';
 
 export class Server {
@@ -28,7 +28,7 @@ export class Server {
 
         app.use("/api",RateLimit,bodyParse,routes)
         server.listen(process.env.PORT || 3000, () => {
-            console.log(`Server is running at port 3000`);
+            console.log(`Server is running at port ${server.address().port}`);
             const events = ["SIGINT","SIGTERM"];
             events.forEach(event =>{
                 process.on(event,()=>{

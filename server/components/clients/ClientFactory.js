@@ -11,6 +11,7 @@ export class ClientFactory {
             const service = new ClientService({ repository });
             return new ClientController({ service });
         } catch (error) {
+            console.log(error);
             throw new Error("não foi possivel construir o ClientController");
         }
     }
