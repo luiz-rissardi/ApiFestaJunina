@@ -1,5 +1,5 @@
 import { ProductService } from "./ProductService.js";
-import { ProductRepository } from "./productRepository.js";
+import { ProductRepository } from "./ProductRepository.js";
 import { MySqlDatabase } from "../../data/MySqlDataBase.js";
 import { ProductController } from "./ProductController.js";
 

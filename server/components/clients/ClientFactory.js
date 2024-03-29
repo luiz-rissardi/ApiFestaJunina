@@ -1,6 +1,6 @@
 import { ClientController } from "./ClientController.js";
-import { ClientRepository } from "./clientRepository.js";
-import { ClientService } from "./clientService.js";
+import { ClientRepository } from "./ClientRepository.js";
+import { ClientService } from "./ClientService.js";
 import { MySqlDatabase } from "../../data/MySqlDataBase.js";
 
 export class ClientFactory {
