@@ -8,7 +8,7 @@
     "carga": "npx autocannon -c 1000 -d 30 http://localhost:8723/api/command",
     "carga-p": "npx autocannon -c 1000 -d 30 -m POST -b \"{\\\"productName\\\": \\\"carne\\\", \\\"price\\\": 12.9, \\\"quantity\\\": 300}\" -H \"Content-Type: application/json\" http://localhost:8723/api/product",
     "c": "npx climem 8999",
-    "s-c": "set CLIMEM=8999 && node -r climem  --env-file .env ./server/index.js"
+    "s-c": "set CLIMEM=8999 && node -r climem  ./index.js"
   },
   "private": true,
   "dependencies": {

@@ -126,7 +126,6 @@ export class OrderProdutsService extends ValidateFieldsTemplateMethod {
         try {
             return await this.#repository.findTop(rank);
         } catch (error) {
-            console.log(error);
             loggers.error(`orders => findTopOrderProduts => erro ao buscar top 5 produtos vendidos ${error.message}`)
             throw new Error("não foi possivel buscar top 5 produtos vendidos")
         }

@@ -126,6 +126,8 @@ export class OrderProdutsRepository {
             WHERE orderId = ? AND 
                   productId = ?
             `, [quantity, totalPrice, orderId, productId])
+            connection.release();
+            return;
         } catch (error) {
             throw new Error(error.message)
         }
