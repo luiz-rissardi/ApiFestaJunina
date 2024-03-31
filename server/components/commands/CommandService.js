@@ -121,7 +121,7 @@ export class CommandService extends ValidateFieldsTemplateMethod {
                 }
             }
             const result = await Promise.all(commands.map(el => this.#repository.createOne(el)))
-            return result
+            return result.map((el,index) => ({commandId:el,comamndUrl:commands[index]}))
         } catch (error) {
             loggers.error(`CommandService => generateCommandBatch => erro ao gerar o lote de comandas ${error.message}`)
             throw new Error("Não foi possível gerar o lote de comandas")
