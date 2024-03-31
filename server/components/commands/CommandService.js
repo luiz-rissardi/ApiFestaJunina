@@ -108,7 +108,7 @@ export class CommandService extends ValidateFieldsTemplateMethod {
         }
     }
 
-    async generateCommandBatch(sizeOfBach = 2) {
+    async generateCommandBatch(sizeOfBach = 3) {
         try {
             const commands = [];
             for (let index = 0; index < sizeOfBach; index++) {
