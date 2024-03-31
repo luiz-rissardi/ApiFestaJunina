@@ -1,6 +1,7 @@
 import { ValidateFieldsTemplateMethod } from "../../util/TemplateMethods/ValidadetFileds.js";
 import { commandsEntity } from "../../util/entity/TypesOfSchema.js";
 import { loggers } from "../../helpers/helper.js";
+import { randomUUID } from "crypto"
 
 export class CommandService extends ValidateFieldsTemplateMethod {
 
@@ -14,9 +15,9 @@ export class CommandService extends ValidateFieldsTemplateMethod {
         try {
             const command = (await this.#repository.getAvaibleCommand())[0];
             if (command) {
-                return { 
+                return {
                     command,
-                    type:"valid"
+                    type: "valid"
                 }
             }
             return {
@@ -48,12 +49,12 @@ export class CommandService extends ValidateFieldsTemplateMethod {
         try {
             if (this.validate("commandUrl", commandUrl)) {
                 const command = await this.#repository.findByCommandUrl(commandUrl);
-                if(command){
+                if (command) {
                     return command
-                }else{
+                } else {
                     return {
-                        message:"comanda indisponivel",
-                        type:"invalid"
+                        message: "comanda indisponivel",
+                        type: "invalid"
                     }
                 }
             } else {
@@ -104,6 +105,26 @@ export class CommandService extends ValidateFieldsTemplateMethod {
         } catch (error) {
             loggers.error(`CommandService => inactiveCommand => erro ao inativar comanda ${error.message}`)
             throw new Error("Não foi possível inativar a comanda")
+        }
+    }
+
+    async generateCommandBatch(sizeOfBach = 2) {
+        try {
+            const commands = [];
+            for (let index = 0; index < sizeOfBach; index++) {
+                const url = randomUUID();
+                const alreadyExists = (await this.#repository.findByCommandUrl(url)) != undefined
+                if(alreadyExists == false){
+                    commands.push(url)
+                }else{
+                    index--;
+                }
+            }
+            const result = await Promise.all(commands.map(el => this.#repository.createOne(el)))
+            return result
+        } catch (error) {
+            loggers.error(`CommandService => generateCommandBatch => erro ao gerar o lote de comandas ${error.message}`)
+            throw new Error("Não foi possível gerar o lote de comandas")
         }
     }
 }

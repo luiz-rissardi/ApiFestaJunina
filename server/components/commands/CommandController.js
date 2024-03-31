@@ -6,6 +6,17 @@ export class CommandController {
         this.#service = service;
     }
 
+    async generateCommandBatch(request,response){
+        try {
+            const result = await this.#service.generateCommandBatch();
+            response.status(201).json(result)
+        } catch (error) {
+            response.writeHead(500);
+        }finally{
+            response.end();
+        }
+    }
+
     async getCommandById(request, response) {
         try {
             const { commandId } = request.params;

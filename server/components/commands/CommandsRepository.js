@@ -57,6 +57,17 @@ export class CommandsRepository {
         }
     }
 
+    async getAll() {
+        try {
+            const connection = await this.#connect();
+            const [commands] = await connection.query("SELECT * from commands");
+            connection.release();
+            return commands
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
     async inactiveCommand(commandId) {
         try {
             const connection = await this.#connect();
@@ -65,6 +76,19 @@ export class CommandsRepository {
             return;
         } catch (error) {
             throw new Error(error.message)
+        }
+    }
+
+    async createOne(commandUrl) {
+        try {
+            const connection = await this.#connect();
+            const [command] = await connection.query(`INSERT INTO commands
+            (commandUrl,avaible,valid) VALUES(?,true,true)
+            `, [commandUrl]);
+            connection.release();
+            return command.insertId;
+        } catch (error) {
+            throw new Error(error.message);
         }
     }
 

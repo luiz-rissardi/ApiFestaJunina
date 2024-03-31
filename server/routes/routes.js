@@ -39,6 +39,9 @@ export class RoutesOfApi {
             .post((req, res) => this.#commandController.getCommandByUrl(req, res))
             .patch((req, res) => this.#commandController.patchCommand(req, res))
 
+        routes.route("/commands")
+            .post((req, res) => this.#commandController.generateCommandBatch(req,res))
+
         routes.route("/command/inactive")
             .post((req, res) => this.#commandController.inactiveCommand(req, res))
 
