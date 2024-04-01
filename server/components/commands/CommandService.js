@@ -120,7 +120,7 @@ export class CommandService extends ValidateFieldsTemplateMethod {
                     index--;
                 }
             }
-            const result = await Promise.all(commands.map(el => this.#repository.createOne(el)))
+            const result = await this.#repository.createMany(commands)
             return result.map((el,index) => ({commandId:el,comamndUrl:commands[index]}))
         } catch (error) {
             loggers.error(`CommandService => generateCommandBatch => erro ao gerar o lote de comandas ${error.message}`)

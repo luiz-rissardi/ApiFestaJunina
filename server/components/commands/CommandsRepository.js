@@ -79,14 +79,20 @@ export class CommandsRepository {
         }
     }
 
-    async createOne(commandUrl) {
+    async createMany(commandsUrl) {
         try {
             const connection = await this.#connect();
-            const [command] = await connection.query(`INSERT INTO commands
-            (commandUrl,avaible,valid) VALUES(?,true,true)
-            `, [commandUrl]);
+            connection.beginTransaction();
+            const commandsIds = []
+            for (let commandUrl of commandsUrl) {
+                const [command] = await connection.query(`INSERT INTO commands
+                (commandUrl,avaible,valid) VALUES(?,true,true)
+                `, [commandUrl]);
+                commandsIds.push(command.insertId);
+            }
+            await connection.commit();
             connection.release();
-            return command.insertId;
+            return commandsIds;
         } catch (error) {
             throw new Error(error.message);
         }
